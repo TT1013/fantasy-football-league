@@ -1,0 +1,166 @@
+{
+  "_meta": {
+    "source": "TT13 Fantasy League Bylaws (Google Doc, modified 2025-08-19)",
+    "extractedOn": "2026-08-16",
+    "note": "Every field carries a `confidence` marker. 'stated' = written verbatim in the bylaws. 'inferred' = reconstructed from cross-referencing, tallies reconcile exactly but needs commissioner confirmation. 'unknown' = not in the source, must be filled by hand or by API ingest. NOTHING here is invented.",
+    "seasonConvention": "seasonYear = the calendar year the NFL season begins. '24-'25 in the bylaws == seasonYear 2024."
+  },
+
+  "league": {
+    "id": "tt13",
+    "name": "TT13's Fantasy Challenge",
+    "abbr": "TT13",
+    "commissioner": "Tommy Tran",
+    "size": 12,
+    "foundedSeasonYear": 2020,
+    "currentChapter": "V",
+    "confidence": "stated",
+    "platformHistory": [
+      { "seasons": "2020–2024", "platform": "yahoo", "confidence": "stated" },
+      { "seasons": "2025–present", "platform": "sleeper", "confidence": "stated",
+        "note": "Foley's champion declaration for '25-'26: 'Changes platform to Sleeper to support this change.'" }
+    ],
+    "scoringHistory": [
+      { "seasonYear": 2024, "format": "Full PPR", "confidence": "stated" },
+      { "seasonYear": 2025, "format": "0.5 PPR WR / 1.0 RB / 1.5 TE", "confidence": "stated",
+        "note": "Foley's declaration. Positional-differential PPR is why the league left Yahoo." }
+    ],
+    "payouts": {
+      "buyIn": 125, "pot": 1500,
+      "champion": 760, "runnerUp": 275, "regularSeasonWinner": 225,
+      "weeklyHighScore": 140, "survivorPool": 100,
+      "confidence": "stated"
+    },
+    "playoffs": { "teams": 8, "weeks": [15, 16, 17], "confidence": "stated" },
+    "goldenRule": "No slouching on your team. Zero tolerance for late-season automatic bye weeks due to negligence.",
+    "championPerk": "The champion may add or subtract one rule — roster positions, scoring settings, or a fun rule to modernize the league. Recorded as a Champion's Declaration.",
+    "championPerkSecond": "The champion also NAMES the following chapter. Binh won Chapter IV and named Chapter V 'The Flemish Giant Invitational' after his own team. This also resolves the Drive doc titled 'The Flemish Giant Invitational Fantasy Football League Constitutional Bylaws' — it is the Chapter V rulebook, not a separate league.",
+    "ringInspirationRule": "Each chapter's ring is modeled on the Super Bowl champion of ITS OWN NFL season. A fantasy season played Sept–Dec of year Y ends in January of Y+1; that same NFL season's Super Bowl is played weeks later in February of Y+1, and its real ring is unveiled the following summer. So the ring is struck and UNVEILED at the kickoff of the next fantasy season, once its real-world inspiration exists. Chapter VII (NFL 2026) therefore has no ring yet — Super Bowl LXI has not been played."
+  },
+
+  "managers": [
+    { "id": "tt13",      "name": "Tommy Tran", "handle": "TT13", "isCommissioner": true,
+      "careerAsOf2024": { "yearsInLeague": 5, "playoffAppearances": 5, "finalsAppearances": 2, "championships": 1 }, "confidence": "stated" },
+    { "id": "benthai",   "name": "Ben Thai",
+      "careerAsOf2024": { "yearsInLeague": 5, "playoffAppearances": 1, "finalsAppearances": 0, "championships": 0 }, "confidence": "stated" },
+    { "id": "kaufman",   "name": "Jake Kaufman",
+      "careerAsOf2024": { "yearsInLeague": 5, "playoffAppearances": 5, "finalsAppearances": 0, "championships": 0 },
+      "note": "5 playoff appearances in 5 years, zero finals. The league's defining hard-luck story — worth its own Hall of Records callout.", "confidence": "stated" },
+    { "id": "foley",     "name": "Matt Foley",
+      "careerAsOf2024": { "yearsInLeague": 5, "playoffAppearances": 4, "finalsAppearances": 1, "championships": 1 }, "confidence": "stated" },
+    { "id": "chen",      "name": "Andrew Chen",
+      "careerAsOf2024": { "yearsInLeague": 5, "playoffAppearances": 4, "finalsAppearances": 1, "championships": 0 }, "confidence": "stated" },
+    { "id": "binh",      "name": "Binh Nguyen",
+      "careerAsOf2024": { "yearsInLeague": 5, "playoffAppearances": 4, "finalsAppearances": 2, "championships": 2 },
+      "note": "Only two-time champion in league history. Most decorated manager.", "confidence": "stated" },
+    { "id": "phong",     "name": "Phong Nguyen",
+      "careerAsOf2024": { "yearsInLeague": 5, "playoffAppearances": 2, "finalsAppearances": 1, "championships": 0 }, "confidence": "stated" },
+    { "id": "skroce",    "name": "Matt Skroce",
+      "careerAsOf2024": { "yearsInLeague": 3, "playoffAppearances": 2, "finalsAppearances": 0, "championships": 0 }, "confidence": "stated" },
+    { "id": "maniel",    "name": "Mandy Liao & Dan Dacey", "handle": "Maniel", "isCoManaged": true,
+      "careerAsOf2024": { "yearsInLeague": 3, "playoffAppearances": 2, "finalsAppearances": 1, "championships": 1 }, "confidence": "stated" },
+    { "id": "eddie",     "name": "Eddie Fisher",
+      "careerAsOf2024": { "yearsInLeague": 2, "playoffAppearances": 2, "finalsAppearances": 0, "championships": 0 }, "confidence": "stated" },
+    { "id": "holmqvist", "name": "Dan Holmqvist",
+      "careerAsOf2024": { "yearsInLeague": 1, "playoffAppearances": 0, "finalsAppearances": 0, "championships": 0 }, "confidence": "stated" },
+    { "id": "timmy",     "name": "Timmy Nguyen",
+      "careerAsOf2024": { "yearsInLeague": 4, "playoffAppearances": 3, "finalsAppearances": 1, "championships": 0 },
+      "note": "Did not play 2024; returned for 2025, reclaiming Pat's slot.", "confidence": "stated" },
+    { "id": "pat",       "name": "Pat", "status": "alumnus",
+      "careerAsOf2024": { "yearsInLeague": null, "playoffAppearances": null, "finalsAppearances": null, "championships": 0 },
+      "note": "Finished 9th in '24–'25 and left the league. Timmy Nguyen took back the slot for '25–'26.", "confidence": "confirmed" }
+  ],
+
+  "seasons": [
+    {
+      "seasonYear": 2020, "label": "'20–'21", "chapter": "I",
+      "chapterName": "The Beginning: Any Given Sunday", "namedBy": null,
+      "ringInspiration": { "game": "Super Bowl LV", "team": "Tampa Bay Buccaneers", "nflSeason": 2020, "unveiled": "2021-07" },
+      "platform": "yahoo",
+      "champion": { "managerId": "binh", "teamNameUsed": "Flemish Giant", "confidence": "confirmed" },
+      "championsDeclaration": { "appliesTo": "'21–'22", "rule": null, "confidence": "confirmed",
+        "note": "No rule change — Binh declined to use the perk." },
+      "standings": [], "recordsConfidence": "unknown",
+      "_note": "Inaugural champion."
+    },
+    {
+      "seasonYear": 2021, "label": "'21–'22", "chapter": "II",
+      "chapterName": "The Road to Glory", "namedBy": "binh",
+      "ringInspiration": { "game": "Super Bowl LVI", "team": "Los Angeles Rams", "nflSeason": 2021, "unveiled": "2022-07" },
+      "platform": "yahoo",
+      "champion": { "managerId": "tt13", "confidence": "confirmed" },
+      "championsDeclaration": { "appliesTo": "'22–'23", "rule": "Superflex", "confidence": "stated" },
+      "standings": [], "recordsConfidence": "unknown"
+    },
+    {
+      "seasonYear": 2022, "label": "'22–'23", "chapter": "III",
+      "chapterName": "The Longest Yard", "namedBy": "tt13",
+      "ringInspiration": { "game": "Super Bowl LVII", "team": "Kansas City Chiefs", "nflSeason": 2022, "unveiled": "2023-06" },
+      "platform": "yahoo",
+      "champion": { "managerId": "maniel", "confidence": "confirmed" },
+      "championsDeclaration": { "appliesTo": "'23–'24", "rule": "Lowest-scoring team each week throws $5 into a pool, collected by the highest scoring team at season's end.", "confidence": "stated" },
+      "standings": [], "recordsConfidence": "unknown",
+      "_note": "Maniel won as a first-year manager."
+    },
+    {
+      "seasonYear": 2023, "label": "'23–'24", "chapter": "IV",
+      "chapterName": "The Madden Curse", "namedBy": "maniel",
+      "ringInspiration": { "game": "Super Bowl LVIII", "team": "Kansas City Chiefs", "nflSeason": 2023, "unveiled": "2024-06" },
+      "platform": "yahoo",
+      "champion": { "managerId": "binh", "teamNameUsed": "Flemish Giant", "confidence": "confirmed" },
+      "championsDeclaration": { "appliesTo": "'24–'25", "rule": "$5 penalty goes directly to that week's high scorer instead of pooling. Lowest-scoring team must record 10 push-ups and send to chat.", "confidence": "stated" },
+      "standings": [], "recordsConfidence": "unknown",
+      "_note": "Flemish Giant is Binh's team name and is used for both of his titles (2020 and 2023)."
+    },
+    {
+      "seasonYear": 2024, "label": "'24–'25", "chapter": "V",
+      "chapterName": "The Flemish Giant Invitational", "namedBy": "binh",
+      "ringInspiration": { "game": "Super Bowl LIX", "team": "Philadelphia Eagles", "nflSeason": 2024, "unveiled": "2025-07" },
+      "platform": "yahoo",
+      "champion": { "managerId": "foley", "teamNameUsed": "I Can Buy Myself Bowers", "record": "6-8", "confidence": "confirmed" },
+      "championsDeclaration": { "appliesTo": "'25–'26", "rule": "Removes the $5 punishment, keeps the 10 push-ups. Scoring becomes 0.5 PPR receivers / 1.0 RB / 1.5 TE. Moves the league to Sleeper to support it.", "confidence": "stated" },
+      "recordsConfidence": "stated",
+      "standings": [
+        { "place": 1,  "managerId": "foley",     "record": "6-8"  },
+        { "place": 2,  "managerId": "phong",     "record": "8-6"  },
+        { "place": 3,  "managerId": "eddie",     "record": "9-5"  },
+        { "place": 4,  "managerId": "kaufman",   "record": "8-6"  },
+        { "place": 5,  "managerId": "maniel",    "record": "11-3" },
+        { "place": 6,  "managerId": "tt13",      "record": "8-6"  },
+        { "place": 7,  "managerId": "skroce",    "record": "7-7"  },
+        { "place": 8,  "managerId": "chen",      "record": "6-8"  },
+        { "place": 9,  "managerId": "pat",       "record": null, "_gap": "Record not stated in bylaws." },
+        { "place": 10, "managerId": "benthai",   "record": "6-8"  },
+        { "place": 11, "managerId": "binh",      "record": "5-9"  },
+        { "place": 12, "managerId": "holmqvist", "record": "4-10" }
+      ],
+      "storylines": [
+        "Foley won the title at 6-8 — a losing regular season. The lowest-seeded champion in league history.",
+        "Maniel finished 11-3, the best record in the league, and placed 5th.",
+        "Binh, the two-time champion, finished 11th at 5-9."
+      ]
+    },
+    {
+      "seasonYear": 2025, "label": "'25–'26", "chapter": "VI",
+      "chapterName": "The Mandu Memorial", "namedBy": "foley",
+      "ringInspiration": { "game": "Super Bowl LX", "team": "Seattle Seahawks", "nflSeason": 2025, "unveiled": "2026-06" },
+      "platform": "sleeper",
+      "champion": { "managerId": "holmqvist", "teamNameUsed": "Dan's Dazzling Team", "confidence": "confirmed" },
+      "championsDeclaration": { "appliesTo": "'26–'27", "rule": null, "confidence": "pending",
+        "_gap": "Commissioner is writing this up." },
+      "standings": [], "recordsConfidence": "unknown",
+      "storylines": [
+        "Holmqvist won it all in his second season, one year after finishing 12th at 4-10 as a rookie. Worst to first."
+      ],
+      "_gap": "Full standings and records are on Sleeper and pullable from the open API with no application required — the fastest real data available."
+    }
+  ],
+
+  "openQuestions": [
+    "Holmqvist's Champion's Declaration for '26–'27 — commissioner is writing it.",
+    "Team names per manager per season — none are recorded in the bylaws, and the ring's left panel is built for them. Sleeper supplies 2025 onward; 2020–2024 need Yahoo or hand entry.",
+    "Championship game scores and opponents for all six seasons — needed for the ring's right panel.",
+    "Regular-season records for 2020–2023 and 2025.",
+    "Sleeper league ID, to pull 2025 immediately."
+  ]
+}

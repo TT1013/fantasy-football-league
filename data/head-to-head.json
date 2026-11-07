@@ -1,0 +1,122 @@
+{
+ "Tommy Tran": {
+  "best": [
+   "Thai",
+   "6-0"
+  ],
+  "worst": [
+   "B. Nguyen",
+   "3-6"
+  ]
+ },
+ "Binh Nguyen": {
+  "best": [
+   "maniel",
+   "3-1"
+  ],
+  "worst": [
+   "Fisher",
+   "1-3"
+  ]
+ },
+ "Matt Foley": {
+  "best": [
+   "Skroce",
+   "4-0"
+  ],
+  "worst": [
+   "Tran",
+   "1-8"
+  ]
+ },
+ "Jake Kaufman": {
+  "best": [
+   "T. Nguyen",
+   "4-1"
+  ],
+  "worst": [
+   "Thai",
+   "2-4"
+  ]
+ },
+ "Timmy Nguyen": {
+  "best": [
+   "Thai",
+   "4-1"
+  ],
+  "worst": [
+   "Kaufman",
+   "1-4"
+  ]
+ },
+ "Andrew Chen": {
+  "best": [
+   "B. Nguyen",
+   "4-2"
+  ],
+  "worst": [
+   "Skroce",
+   "2-5"
+  ]
+ },
+ "Phong Nguyen": {
+  "best": [
+   "Holmqvist",
+   "2-0"
+  ],
+  "worst": [
+   "Foley",
+   "1-6"
+  ]
+ },
+ "Ben Thai": {
+  "best": [
+   "Fisher",
+   "3-1"
+  ],
+  "worst": [
+   "Tran",
+   "0-6"
+  ]
+ },
+ "maniel": {
+  "best": [
+   "Foley",
+   "4-1"
+  ],
+  "worst": [
+   "B. Nguyen",
+   "1-3"
+  ]
+ },
+ "Matt Skroce": {
+  "best": [
+   "P. Nguyen",
+   "5-1"
+  ],
+  "worst": [
+   "Foley",
+   "0-4"
+  ]
+ },
+ "Eddie Fisher": {
+  "best": [
+   "Holmqvist",
+   "3-0"
+  ],
+  "worst": [
+   "Tran",
+   "0-6"
+  ]
+ },
+ "Dan Holmqvist": {
+  "best": [
+   "Thai",
+   "3-0"
+  ],
+  "worst": [
+   "Fisher",
+   "0-3"
+  ]
+ }
+}

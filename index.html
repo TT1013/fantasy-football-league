@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TT13 · Hall of Records</title>
+<style>
+  :root{
+    --bg:#06080c; --case:#0e131c; --rule:#1d2430;
+    --ink:#e9edf4; --muted:#7c8697; --dim:#59616f;
+    --gold:#c9a227; --goldlt:#f0d67e; --brass:#b6a15e;
+    --serif:Georgia,"Times New Roman",serif;
+    --script:"Snell Roundhand","Brush Script MT","Segoe Script",cursive;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;color:var(--ink);
+    background:
+      radial-gradient(900px 520px at 50% -8%, #151b26 0%, transparent 62%),
+      linear-gradient(180deg,#080b11 0%, var(--bg) 45%, #05070a 100%);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  svg{display:block;overflow:visible}
+
+  .mast{text-align:center;padding:76px 0 20px}
+  .mast::after{content:"";display:block;width:190px;height:1px;margin:34px auto 0;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .kicker{font-size:10.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .mast h1{font-family:var(--serif);font-weight:400;letter-spacing:.02em;
+    font-size:clamp(30px,5.4vw,54px);margin:20px 0 10px;line-height:1.08}
+  .mast h1 em{font-style:normal;color:var(--goldlt)}
+  .estab{font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+
+  section{padding:66px 0}
+  .shead{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .shead h2{font-family:var(--serif);font-weight:400;font-size:24px;margin:0}
+  .shead .num{font-size:10.5px;letter-spacing:.3em;color:var(--gold);font-weight:600}
+  .sdesc{color:var(--muted);font-size:13.5px;max-width:680px;margin:0 0 34px;
+    border-bottom:1px solid var(--rule);padding-bottom:22px}
+  .sdesc.lead{font-size:15px;line-height:1.75;max-width:760px;color:#9aa4b4}
+  .fnote{color:var(--dim);font-size:11.5px;line-height:1.7;max-width:760px;margin:18px 0 0}
+  .fnote b{color:var(--brass);font-weight:600}
+
+  .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:920px){.cases{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:580px){.cases{grid-template-columns:1fr}}
+  .case{
+    position:relative;border:1px solid var(--rule);border-radius:4px;cursor:pointer;
+    background:linear-gradient(180deg,#121822 0%, var(--case) 42%, #080b11 100%);
+    padding:34px 18px 0;overflow:hidden;transition:border-color .3s, transform .3s;
+  }
+  .case::before{content:"";position:absolute;top:-52px;left:50%;transform:translateX(-50%);
+    width:180px;height:220px;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 0%, rgba(240,214,126,.17), transparent 68%)}
+  .case:hover{border-color:#3a4252;transform:translateY(-3px)}
+  .case:hover .plaque{background:linear-gradient(180deg,#1a1f29,#12161e)}
+  .case.empty{border-style:dashed;border-color:#232a36}
+  .case.empty::before{background:radial-gradient(ellipse at 50% 0%, rgba(140,160,190,.09), transparent 68%)}
+  .chap{position:absolute;top:12px;left:0;right:0;text-align:center;font-family:var(--serif);
+    font-size:10.5px;letter-spacing:.26em;color:var(--dim)}
+  .ringbox{display:flex;justify-content:center;align-items:center;min-height:190px;position:relative;z-index:1}
+  .plaque{margin:20px -18px 0;padding:16px 18px 18px;text-align:center;
+    border-top:1px solid var(--rule);background:linear-gradient(180deg,#151a23,#0e121a);transition:background .3s}
+  .plaque .cn{font-family:var(--serif);font-size:14px;color:var(--goldlt);font-style:italic;margin-bottom:9px}
+  .plaque .yr{font-size:10.5px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
+  .plaque .who{font-size:15px;margin-top:8px;font-weight:600}
+  .plaque .team{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+  .plaque .tag{display:inline-block;margin-top:11px;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--brass);border:1px solid #34301f;border-radius:99px;padding:3px 9px}
+  .plaque .await{color:#4d5666;font-style:italic;font-size:13px;margin-top:8px}
+  .src{margin-top:12px;font-size:10px;letter-spacing:.1em;color:#3f4652;text-transform:uppercase}
+
+  .lineage{position:relative;padding-left:22px}
+  .lineage::before{content:"";position:absolute;left:3px;top:8px;bottom:8px;width:1px;
+    background:linear-gradient(180deg,transparent,var(--gold),var(--gold),transparent)}
+  .ln{position:relative;padding:17px 0 17px 22px}
+  .ln::before{content:"";position:absolute;left:-4px;top:26px;width:9px;height:9px;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 0 3px #06080c}
+  .ln.rep::before{background:var(--goldlt);box-shadow:0 0 0 3px #06080c,0 0 12px 2px rgba(240,214,126,.5)}
+  .ln .top{display:flex;gap:16px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+  .ln .y{font-family:var(--serif);font-size:15px;color:var(--goldlt);min-width:66px}
+  .ln .n{font-weight:600}
+  .ln .cn{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:13.5px}
+  .ln .d{color:var(--muted);font-size:13px;padding-left:82px}
+  @media(max-width:640px){.ln .d{padding-left:0}}
+  .ln .d b{color:#9aa4b4;font-weight:600}
+  .ln .d .pend{color:#6b5a2e;font-style:italic}
+
+  .tblwrap{overflow-x:auto}
+  .tbl{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px}
+  .tbl th{text-align:left;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--dim);font-weight:600;padding:0 10px 12px;border-bottom:1px solid var(--rule);
+    white-space:nowrap}
+  .tbl th.n,.tbl td.n{text-align:center}
+  .tbl td{padding:13px 10px;border-bottom:1px solid #141a24;white-space:nowrap}
+  .tbl tr:hover td{background:#0d121a}
+  .tbl .mgr{font-weight:600;white-space:normal}
+  .tbl .rings{color:var(--goldlt);letter-spacing:2px}
+  .tbl .zero{color:#39404d}
+  .tbl .alum td{opacity:.5;font-style:italic}
+  .stattbl th{cursor:pointer;user-select:none}
+  .stattbl th:hover{color:var(--brass)}
+  .stattbl th.sorted{color:var(--goldlt)}
+  .stattbl th .arrow{margin-left:3px;opacity:.6;font-size:9px}
+  .stattbl td.pos{color:#7fd99a}
+  .stattbl td.neg{color:#e08a8a}
+  .h2h b{font-weight:600;color:var(--ink)}
+  .h2h i{font-style:normal;font-size:12px;margin-left:5px}
+  .h2h i.pos{color:#7fd99a}
+  .h2h i.neg{color:#e08a8a}
+  .stattbl tr.top-row td{background:linear-gradient(90deg,rgba(240,214,126,.06),transparent)}
+
+  .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:14px;margin-bottom:26px}
+  .stile{border:1px solid var(--rule);border-radius:4px;padding:16px 18px;
+    background:linear-gradient(180deg,#111621,#0a0e15)}
+  .stile .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+  .stile .val{font-family:var(--serif);font-size:24px;color:var(--goldlt);margin:7px 0 4px}
+  .stile .who{font-size:12px;color:var(--muted)}
+
+  .exh{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:18px}
+  .card{border:1px solid var(--rule);border-radius:4px;padding:22px;
+    background:linear-gradient(180deg,#0f141d,#0a0e15)}
+  .card h3{font-family:var(--serif);font-weight:400;font-size:17px;margin:0 0 4px;color:var(--goldlt)}
+  .card .stat{font-family:var(--serif);font-size:34px;line-height:1.1;margin:12px 0 8px}
+  .card p{margin:0;color:var(--muted);font-size:13px}
+
+  .veil{position:fixed;inset:0;background:rgba(3,5,8,.9);backdrop-filter:blur(7px);
+    display:none;align-items:center;justify-content:center;padding:24px;z-index:50}
+  .veil.on{display:flex}
+  .modal{max-width:660px;width:100%;max-height:88vh;overflow-y:auto;border:1px solid #2a323f;
+    border-radius:6px;background:linear-gradient(180deg,#121821,#080c12);padding:34px;position:relative}
+  .modal .x{position:absolute;top:14px;right:18px;color:var(--dim);cursor:pointer;font-size:22px;line-height:1}
+  .modal .x:hover{color:var(--ink)}
+  .mhead{text-align:center;border-bottom:1px solid var(--rule);padding-bottom:22px;margin-bottom:14px}
+  .mhead .cn{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--goldlt)}
+  .mhead .yr{font-size:10.5px;letter-spacing:.24em;color:var(--dim);text-transform:uppercase;margin-top:8px}
+  .mhead .who{font-size:17px;font-weight:600;margin-top:14px}
+  .mhead .team{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .mring{display:flex;justify-content:center;margin:8px 0 6px;position:relative}
+  .reveal-stage{position:relative;animation:ringReveal 1.1s cubic-bezier(.16,1.2,.3,1) both}
+  /* ── 3D stage ── */
+  .ring3d{perspective:1100px;perspective-origin:50% 44%;touch-action:none;cursor:grab;
+    position:relative;display:block}
+  .ring3d:active{cursor:grabbing}
+  .ring3d-inner{transform-style:preserve-3d;position:relative;will-change:transform;
+    filter:drop-shadow(0 16px 22px rgba(0,0,0,.75))}
+  .ring3d-inner.idle{animation:idleSpin 9s ease-in-out infinite}
+  @keyframes idleSpin{
+    0%,100%{transform:rotateY(-30deg) rotateX(11deg)}
+    50%    {transform:rotateY(30deg)  rotateX(5deg)}
+  }
+  .rlayer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    pointer-events:none}
+  .rlayer.top{position:relative;pointer-events:auto}
+  .rothint{text-align:center;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--dim);margin-top:2px;opacity:0;transition:opacity .5s}
+  .rothint.on{opacity:1}
+  @keyframes ringReveal{
+    0%{opacity:0;transform:scale(.55) rotate(-14deg);filter:brightness(2.6) saturate(0)}
+    55%{opacity:1;filter:brightness(1.7) saturate(1.4)}
+    100%{opacity:1;transform:scale(1) rotate(0);filter:brightness(1) saturate(1)}
+  }
+  .burst{position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;
+    background:radial-gradient(circle,#fff 0%,#f0d67e 45%,transparent 75%);
+    pointer-events:none;opacity:0;animation:burstOut 1.15s cubic-bezier(.16,.8,.3,1) both}
+  @keyframes burstOut{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+    12%{opacity:1}
+    100%{opacity:0;transform:translate(calc(-50% + var(--bx)),calc(-50% + var(--by))) scale(1)}
+  }
+  .flash{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,255,255,.85) 0%,rgba(240,214,126,.35) 35%,transparent 70%);
+    animation:flashOut .7s ease-out both}
+  @keyframes flashOut{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(1.9)}}
+  .mhint{text-align:center;font-size:11.5px;color:var(--brass);letter-spacing:.06em;margin-bottom:22px;min-height:17px}
+  .drow{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #141a24;font-size:13.5px}
+  .drow .k{color:var(--dim);min-width:128px;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;padding-top:2px}
+  .drow .v{flex:1}
+  .drow .v.gap{color:#6b5a2e;font-style:italic}
+
+  footer{padding:60px 0 80px;text-align:center;color:var(--dim);font-size:12px;
+    border-top:1px solid var(--rule);margin-top:40px}
+  footer .att{margin-top:12px;color:#454c59;font-size:11px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mast">
+    <div class="kicker">Est. 2020</div>
+    <h1><em>Hall of Records</em></h1>
+  </div>
+
+  <section>
+    <div class="shead"><span class="num">I</span><h2>The Memorial</h2></div>
+    <p class="sdesc lead">The ultimate goal of every league member: to be enshrined and
+      immortalized in league history. A ring here is not a trophy — it is a permanent,
+      public record that for one particular year, in front of everyone, you were better
+      than eleven people who wanted it just as badly. It cannot be traded, deleted, or
+      negotiated. It is struck once, it stays forever, and the only way to get one is to
+      earn it.</p>
+    <div class="cases" id="cases"></div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="num">II</span><h2>The Lineage</h2></div>
+    <p class="sdesc">The champion wins one power: to amend the previous year's rule and/or
+      add a new one. The league you play today is the accumulated will of everyone who has
+      won it.</p>
+    <div class="lineage" id="lineage"></div>
+  </section>
+
+  <section>
+    <div class="shead"><span class="num">III</span><h2>Lifetime Stats</h2></div>
+    <p class="sdesc">Every active owner, across only the chapters they actually played —
+      absences aren't padded with zeros. Click any column header to sort.</p>
+    <div class="statgrid" id="statgrid"></div>
+    <div class="tblwrap"><table class="tbl stattbl" id="stats-tbl"></table></div>
+  </section>
+
+</div>
+<div class="veil" id="veil"><div class="modal" id="modal"></div></div>
+
+<script>
+/* ═══════════ DATA — canton/seed/tt13.json ═══════════ */
+const SIZE = 12;
+
+const SEASONS = [
+{ ch:"I", year:2020, label:"'20–'21", name:"The Beginning: Any Given Sunday", namedBy:null,
+  champ:"Binh Nguyen", team:"Flemish Giant", mono:"FG", titlesThen:1, record:"9-4",
+  runnerUp:"Andrew Chen — Instant Kamara", third:"Phong Nguyen — Freak Squad", platform:"Yahoo",
+  src:"Super Bowl LV · Tampa Bay Buccaneers",
+  borrowed:"Pewter and Buccaneer red, with the first removable top in Super Bowl history — a seam, two unscrew notches, and eight emerald-cut stones down each flank. Orange baguettes set into the top and bottom edges.",
+  decl:"No rule change.",
+  story:"The inaugural champion. Every rule written since was written by someone trying to follow him. Won with the 7th-most points in the league — the softest schedule (lowest PA) carried him." },
+
+{ ch:"II", year:2021, label:"'21–'22", name:"The Road to Glory", namedBy:"Binh Nguyen",
+  champ:"Tommy Tran", team:"TT13", mono:"TT13", titlesThen:1, record:"9-5",
+  runnerUp:"Timmy Nguyen — DangeRuss Kupp", third:"Andrew Chen — Post Season Clarity", platform:"Yahoo",
+  src:"Super Bowl LVI · Los Angeles Rams",
+  borrowed:"A true oval face in white gold, a radiating baguette border, and a sol-gold frame ringing a royal-blue sapphire centre. Columns lift the face clear of the body over a hidden stadium bowl. The largest ring ever made at the time.",
+  decl:"Superflex.",
+  finalScore:"TT13 196.06 def. DangeRuss Kupp 127.64",
+  story:"The commissioner won his own league, then used the perk to change what a roster is. Beat the league's best regular-season team (11-3) in the final, 196.06–127.64." },
+
+{ ch:"III", year:2022, label:"'22–'23", name:"The Longest Yard", namedBy:"Tommy Tran",
+  champ:"Mandy Liao & Dan Dacey", team:"maniel", mono:"M&D", titlesThen:1, record:"10-4",
+  runnerUp:"Anthony Bolivar — AB", third:"Matt Skroce — Is it worth it? Let me KIRK it", platform:"Yahoo",
+  src:"Super Bowl LVII · Kansas City Chiefs",
+  borrowed:"A squared face in yellow gold over a deep ruby ground, ringed in diamonds — and a top that lifts away entirely to be worn as a pendant.",
+  decl:"The lowest-scoring team each week throws $5 into a pool, collected by the highest scorer at season's end.",
+  finalScore:"maniel 130.80 def. AB 108.44",
+  story:"Won it in their first season in the league, with the league's best record. Then invented the weekly tax every manager since has paid." },
+
+{ ch:"IV", year:2023, label:"'23–'24", name:"The Madden Curse", namedBy:"maniel",
+  champ:"Binh Nguyen", team:"Flemish Giant", mono:"FG", titlesThen:2, record:"8-6",
+  runnerUp:"Tommy Tran — TT13", third:"Timmy Nguyen — Chase'n The Cup", platform:"Yahoo",
+  src:"Super Bowl LVIII · Kansas City Chiefs",
+  borrowed:"The back-to-back ring: an eight-sided face, LEAGUE and CHAMPION split to either flank, a row of trophies along the top edge, and the defining fact of the season written across it in the commissioner's own hand.",
+  decl:"Removes the $5 weekly low-score penalty. Implements 10 push-ups for the lowest scorer each week instead.",
+  script:"Two rings. One crest.",
+  finalScore:"Flemish Giant 157.94 def. TT13 128.84",
+  story:"Second ring — as the 4-seed, beating the 2-seed by 84 points in the semifinal before beating the top seed in the final. Only manager to hold two, and the only crest struck twice." },
+
+{ ch:"V", year:2024, label:"'24–'25", name:"The Flemish Giant Invitational", namedBy:"Binh Nguyen",
+  champ:"Matt Foley", team:"I Can Buy Myself Bowers", mono:"BOW", titlesThen:1, record:"6-8",
+  runnerUp:"Phong Nguyen — Daddy Tilt", third:"Eddie Fisher — Robinson & Robinson", platform:"Yahoo",
+  src:"Super Bowl LIX · Philadelphia Eagles",
+  borrowed:"Midnight green sapphires in white gold, cut to a shield. Wings fold against the flanks and spring open at a hidden button to reveal the inscription beneath.",
+  reveal:"6–8. CHAMPION ANYWAY",
+  decl:"Add a 4th WR slot.",
+  finalScore:"I Can Buy Myself Bowers 164.66 def. Daddy Tilt 161.22",
+  story:"Won the closest final in league history, 164.66–161.22. maniel went 11–3 that year — the league's best record — and finished 5th." },
+
+{ ch:"VI", year:2025, label:"'25–'26", name:"The Mandu Memorial", namedBy:"Matt Foley",
+  champ:"Dan Holmqvist", team:"Dan's Dazzling Team", mono:"DDT", titlesThen:1, record:"6-8",
+  runnerUp:"maniel", third:"Matt Skroce — Dart-er of the McBride", platform:"Sleeper",
+  src:"Super Bowl LX · Seattle Seahawks",
+  borrowed:"Navy sapphire under a domed face, action-green feathers — one per manager — set along the base, and stadium arches in white gold that spring apart to reveal the title.",
+  decl:"Removes the 4th WR slot. Changes the playoff format to 7 teams with a first-place bye.",
+  finalScore:"Dan's Dazzling Team 167.60 def. maniel 154.22",
+  story:"Finished 12th at 4–10 the year before. Won the whole thing the next season — and both of the league's top two regular-season records (Tommy's 11-3, Phong's 10-4) lost in the quarterfinal to get there." }
+];
+
+// Lifetime totals per active owner, computed from every verified chapter table above.
+// Seasons a manager didn't play are excluded from their own averages, not zero-padded.
+/* Regular-season W-L, points, and finishes are from all six chapters.
+   Postseason W-L covers Chapters II–VI only — Chapter I's bracket was never
+   recorded (final standings survive, the individual games don't).
+   finishes[] = final placement each chapter played, used for avg finish + podiums. */
+/* bestVs / worstVs computed from all 420 transcribed regular-season matchups,
+   Chapters II–VI, restricted to opponents still in the league. */
+const STATS = [
+  { name:"Tommy Tran",   seasons:6, w:51, l:32, titles:1, po:6, pw:5, pl:4,
+    pf:12035.50, pa:11197.44, finishes:[5,1,8,2,6,6],  bestVs:["Thai","6-0"],     worstVs:["B. Nguyen","3-6"] },
+  { name:"maniel",       seasons:4, w:34, l:22, titles:1, po:3, pw:5, pl:2,
+    pf:8373.62,  pa:8045.98,  finishes:[1,9,5,2],      bestVs:["Foley","4-1"],     worstVs:["B. Nguyen","1-3"] },
+  { name:"Matt Skroce",  seasons:4, w:29, l:27, titles:0, po:3, pw:4, pl:3,
+    pf:8524.80,  pa:8129.06,  finishes:[3,10,7,3],     bestVs:["P. Nguyen","5-1"], worstVs:["Foley","0-4"] },
+  { name:"Binh Nguyen",  seasons:6, w:44, l:39, titles:2, po:5, pw:6, pl:6,
+    pf:11937.80, pa:11623.90, finishes:[1,4,4,1,11,4], bestVs:["maniel","3-1"],    worstVs:["Fisher","1-3"] },
+  { name:"Timmy Nguyen", seasons:5, w:38, l:31, titles:0, po:4, pw:4, pl:4,
+    pf:10076.06, pa:9818.16,  finishes:[8,2,5,3,8],    bestVs:["Thai","4-1"],      worstVs:["Kaufman","1-4"] },
+  { name:"Jake Kaufman", seasons:6, w:45, l:38, titles:0, po:5, pw:2, pl:6,
+    pf:11610.34, pa:11411.54, finishes:[6,6,7,4,4,10], bestVs:["T. Nguyen","4-1"], worstVs:["Thai","2-4"] },
+  { name:"Eddie Fisher", seasons:3, w:22, l:20, titles:0, po:2, pw:2, pl:2,
+    pf:6003.94,  pa:5997.06,  finishes:[7,3,9],        bestVs:["Holmqvist","3-0"], worstVs:["Tran","0-6"] },
+  { name:"Matt Foley",   seasons:6, w:42, l:41, titles:1, po:5, pw:3, pl:3,
+    pf:11588.38, pa:11597.64, finishes:[4,9,6,5,1,7],  bestVs:["Skroce","4-0"],    worstVs:["Tran","1-8"] },
+  { name:"Phong Nguyen", seasons:6, w:36, l:47, titles:0, po:3, pw:2, pl:2,
+    pf:11426.54, pa:11589.82, finishes:[3,12,11,12,2,5], bestVs:["Holmqvist","2-0"], worstVs:["Foley","1-6"] },
+  { name:"Andrew Chen",  seasons:6, w:39, l:44, titles:0, po:4, pw:2, pl:3,
+    pf:11106.66, pa:11580.16, finishes:[2,3,12,8,8,11], bestVs:["B. Nguyen","4-2"], worstVs:["Skroce","2-5"] },
+  { name:"Ben Thai",     seasons:6, w:35, l:48, titles:0, po:1, pw:0, pl:1,
+    pf:11069.42, pa:11615.98, finishes:[10,10,9,6,10,12], bestVs:["Fisher","3-1"], worstVs:["Tran","0-6"] },
+  { name:"Dan Holmqvist",seasons:2, w:10, l:18, titles:1, po:1, pw:3, pl:0,
+    pf:3995.72,  pa:4253.88,  finishes:[12,1],         bestVs:["Thai","3-0"],      worstVs:["Fisher","0-3"] },
+].map(m => {
+  const g=m.w+m.l, pg=m.pw+m.pl;
+  return { ...m, g, pg,
+    winpct: m.w/g,
+    ppct:   pg ? m.pw/pg : 0,
+    avgPf:  m.pf/m.seasons,
+    avgPa:  m.pa/m.seasons,
+    margin: (m.pf-m.pa)/m.seasons,
+    poRate: m.po/m.seasons,
+    avgFin: m.finishes.reduce((a,b)=>a+b,0)/m.finishes.length,
+    finals:  m.finishes.filter(f=>f<=2).length };   /* reached the title game */
+});
+
+/* a ring glyph — used in place of the old diamond for titles */
+const RINGICON = `<svg viewBox="0 0 16 16" width="13" height="13" style="vertical-align:-2px;margin:0 1px">
+  <circle cx="8" cy="10" r="4.6" fill="none" stroke="#f0d67e" stroke-width="1.9"/>
+  <path d="M8 0.9 L10.4 4.1 L8 5.9 L5.6 4.1 Z" fill="#fff"/></svg>`;
+
+const STAT_COLS = [
+  { key:"name",    label:"Manager",       align:"l", fmt:v=>v },
+  { key:"seasons", label:"Sea",           align:"n", fmt:v=>v },
+  { key:"wl",      label:"Reg. Record",   align:"n", fmt:(_,m)=>`${m.w}-${m.l}`, sortKey:"winpct" },
+  { key:"winpct",  label:"Reg. Win %",    align:"n", fmt:v=>(v*100).toFixed(1)+"%" },
+  { key:"pwl",     label:"Post. Record",  align:"n", fmt:(_,m)=>m.pg?`${m.pw}-${m.pl}`:"—", sortKey:"ppct" },
+  { key:"ppct",    label:"Post. Win %",   align:"n", fmt:(v,m)=>m.pg?(v*100).toFixed(1)+"%":"—" },
+  { key:"titles",  label:"Rings",         align:"n", fmt:v=>v?RINGICON.repeat(v):'<span class="zero">—</span>' },
+  { key:"poRate",  label:"Playoff %",     align:"n", fmt:v=>(v*100).toFixed(0)+"%" },
+  { key:"avgFin",  label:"Avg Finish",    align:"n", fmt:v=>v.toFixed(2), invert:true },
+  { key:"finals",  label:"Finals",        align:"n", fmt:v=>v||'<span class="zero">—</span>' },
+  { key:"avgPf",   label:"Avg PF",        align:"n", fmt:v=>v.toFixed(1) },
+  { key:"avgPa",   label:"Avg PA",        align:"n", fmt:v=>v.toFixed(1) },
+  { key:"margin",  label:"Avg Margin",    align:"n", fmt:v=>(v>=0?"+":"")+v.toFixed(1), cls:v=>v>=0?"pos":"neg" },
+  { key:"bestVs",  label:"Owns",          align:"n", sortKey:"winpct",
+    fmt:(v)=>`<span class="h2h"><b>${v[0]}</b> <i class="pos">${v[1]}</i></span>` },
+  { key:"worstVs", label:"Owned By",      align:"n", sortKey:"winpct",
+    fmt:(v)=>`<span class="h2h"><b>${v[0]}</b> <i class="neg">${v[1]}</i></span>` },
+];
+
+
+/* ═══════════ RING ENGINE ═══════════ */
+const NS="http://www.w3.org/2000/svg";
+const E=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const T=(str,a)=>{const t=E("text",a);t.textContent=str;return t;};
+
+/* ─────────────────────────────────────────────────────────────
+   Each chapter inherits the ring of ITS OWN NFL season's champion.
+   Chapter N's fantasy final is in January; that same NFL season's
+   Super Bowl is played weeks later, and its ring is unveiled the
+   following summer — which is when we strike ours.
+   ───────────────────────────────────────────────────────────── */
+const DESIGN = {
+  /* Each entry mirrors the construction of that year's actual Super Bowl ring —
+     face silhouette, metal, stone colour and signature mechanism — with the
+     league's own monogram standing in for the team mark. */
+  I:  { team:"Tampa Bay Buccaneers", sb:"LV",    nfl:2020,
+        shape:"cushion", w:140, h:122, r:44, atY:-.50, abY:.56,
+        metal:"white",  acc:["#ff6b6b","#d50a0a","#5a0404"], acc2:"#FF7900",
+        crest:"banner", sig:"twist" },
+  II: { team:"Los Angeles Rams",     sb:"LVI",   nfl:2021,
+        shape:"oval",    w:146, h:126,        atY:-.52, abY:.58,
+        metal:"white",  acc:["#5a95e8","#003594","#001432"], acc2:"#FFA300",
+        crest:"oval",   sig:"columns" },
+  III:{ team:"Kansas City Chiefs",   sb:"LVII",  nfl:2022,
+        shape:"rsquare", w:134, h:132, r:32, atY:-.50, abY:.55,
+        metal:"gold",   acc:["#f5566a","#e31837","#680714"], acc2:"#FFB81C",
+        crest:"arrow",  sig:"pendant" },
+  IV: { team:"Kansas City Chiefs",   sb:"LVIII", nfl:2023,
+        shape:"octagon", w:146, h:126,        atY:-.52, abY:.57,
+        metal:"gold",   acc:["#f5566a","#e31837","#680714"], acc2:"#FFB81C",
+        crest:"arrow",  sig:"script" },
+  V:  { team:"Philadelphia Eagles",  sb:"LIX",   nfl:2024,
+        shape:"shield",  w:140, h:128,        atY:-.54, abY:.44,
+        metal:"white",  acc:["#3fbfae","#004C54","#001d21"], acc2:"#A5ACAF",
+        crest:"shield", sig:"wings" },
+  VI: { team:"Seattle Seahawks",     sb:"LX",    nfl:2025,
+        shape:"dome",    w:140, h:128,        atY:-.40, abY:.60,
+        metal:"white",  acc:["#69BE28","#002244","#000c18"], acc2:"#69BE28",
+        crest:"hex",    sig:"arches" },
+  VII:{ team:null,                   sb:"LXI",   nfl:2026,
+        shape:"cushion", w:140, h:122, r:44, atY:-.50, abY:.56,
+        metal:"dead",   acc:null, acc2:null,
+        crest:"hex",    sig:null }
+};
+
+/* [0..3] = gradient stops · [4] = deep extrusion tone · [5] = near extrusion tone */
+const METALS = {
+  gold:  ["#f7e2a0","#c9a227","#8c6d1f","#e6cd76", [38,30,10],  [122,96,34]],
+  white: ["#ffffff","#ccd4e0","#8d97a6","#e6ebf2", [28,33,41],  [104,114,130]],
+  pewter:["#f2f5f8","#aeb6bd","#6d757c","#ccd3d9", [30,34,38],  [110,119,126]],
+  two:   ["#ffffff","#d4c07a","#8c6d1f","#e6ddc0", [34,30,16],  [118,100,52]],
+  dead:  ["#5a606b","#3c424c","#262b33","#4a5058", [16,19,24],  [58,63,72]]
+};
+
+function defs(u,ch,dim){
+  const D=DESIGN[ch], acc=D.acc;
+  const M=METALS[dim?"dead":D.metal];
+  const goldStops =
+    `<stop offset="0%" stop-color="${M[0]}"/><stop offset="32%" stop-color="${M[1]}"/>
+     <stop offset="66%" stop-color="${M[2]}"/><stop offset="100%" stop-color="${M[3]}"/>`;
+  const edgeStops =
+    `<stop offset="0%" stop-color="${M[0]}"/><stop offset="52%" stop-color="${M[1]}"/>
+     <stop offset="100%" stop-color="${M[2]}"/>`;
+  const accGrad = acc && !dim
+    ? `<radialGradient id="a${u}" cx="35%" cy="26%" r="82%">
+         <stop offset="0%" stop-color="${acc[0]}"/><stop offset="44%" stop-color="${acc[1]}"/>
+         <stop offset="100%" stop-color="${acc[2]}"/></radialGradient>`
+    : `<radialGradient id="a${u}" cx="35%" cy="28%" r="80%">
+         <stop offset="0%" stop-color="#2f3644"/><stop offset="100%" stop-color="#11151d"/></radialGradient>`;
+  const acc2 = (!dim && D.acc2) ? D.acc2 : "#3a414c";
+  return `<defs>
+  <linearGradient id="g${u}" x1="0" y1="0" x2="0" y2="1">${goldStops}</linearGradient>
+  <linearGradient id="e${u}" x1="0" y1="0" x2="1" y2="1">${edgeStops}</linearGradient>
+  <linearGradient id="y${u}" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="${dim?'#4a5058':'#fbeeb6'}"/>
+    <stop offset="52%" stop-color="${dim?'#3a404a':'#b8912a'}"/>
+    <stop offset="100%" stop-color="${dim?'#22262d':'#6f5416'}"/></linearGradient>
+  <linearGradient id="c2${u}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="${acc2}" stop-opacity=".95"/>
+    <stop offset="100%" stop-color="${acc2}" stop-opacity=".45"/></linearGradient>
+  ${accGrad}
+  <radialGradient id="d${u}" cx="34%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#fff"/><stop offset="56%" stop-color="#dfe7f2"/>
+    <stop offset="100%" stop-color="#93a1b5"/></radialGradient>
+  <radialGradient id="w${u}" cx="50%" cy="34%" r="75%">
+    <stop offset="0%" stop-color="${dim?"#151a22":"#2b3244"}"/><stop offset="100%" stop-color="#0a0d13"/></radialGradient>
+  <filter id="sh${u}" x="-45%" y="-45%" width="190%" height="190%">
+    <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#000" flood-opacity=".8"/></filter>
+  <filter id="bloom${u}" x="-80%" y="-80%" width="260%" height="260%">
+    <feGaussianBlur stdDeviation="2.2" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <radialGradient id="aura${u}" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="${dim?'#3a4250':(D.acc?D.acc[0]:'#f0d67e')}" stop-opacity=".5"/>
+    <stop offset="42%" stop-color="${dim?'#3a4250':(D.acc2||'#c9a227')}" stop-opacity=".2"/>
+    <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="shine${u}" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+    <stop offset="48%" stop-color="#fff" stop-opacity=".55"/>
+    <stop offset="52%" stop-color="#fff" stop-opacity=".55"/>
+    <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+  </linearGradient>
+  <path id="at${u}" d="M ${-D.w*.74},${D.h*D.atY} A ${D.w*.92},${D.w*.92} 0 0 1 ${D.w*.74},${D.h*D.atY}"/>
+  <path id="ab${u}" d="M ${-D.w*.70},${D.h*D.abY} A ${D.w*.88},${D.w*.88} 0 0 0 ${D.w*.70},${D.h*D.abY}"/>
+</defs>`;
+}
+
+const cush=(w,h,r)=>`M ${-w},${-h+r} Q ${-w},${-h} ${-w+r},${-h} L ${w-r},${-h}
+  Q ${w},${-h} ${w},${-h+r} L ${w},${h-r} Q ${w},${h} ${w-r},${h} L ${-w+r},${h}
+  Q ${-w},${h} ${-w},${h-r} Z`;
+
+/* ── ring silhouettes: every chapter gets a different outline ── */
+function shape(kind,w,h,r){
+  switch(kind){
+    case "cushion":
+    case "rsquare":
+      return cush(w,h,r);
+    case "barrel":
+      return `M ${-w*.76},${-h} Q ${-w},${-h*.56} ${-w},0 Q ${-w},${h*.56} ${-w*.76},${h}
+              L ${w*.76},${h} Q ${w},${h*.56} ${w},0 Q ${w},${-h*.56} ${w*.76},${-h} Z`;
+    case "oval":
+      return `M 0,${-h} A ${w},${h} 0 1 1 -0.01,${-h} Z`;
+    case "octagon": {
+      const c=.44;
+      return `M ${-w*c},${-h} L ${w*c},${-h} L ${w},${-h*c} L ${w},${h*c}
+              L ${w*c},${h} L ${-w*c},${h} L ${-w},${h*c} L ${-w},${-h*c} Z`;
+    }
+    case "shield":
+      return `M ${-w+16},${-h} L ${w-16},${-h} Q ${w},${-h} ${w},${-h+16}
+              L ${w},${h*.20} Q ${w},${h*.80} 0,${h} Q ${-w},${h*.80} ${-w},${h*.20}
+              L ${-w},${-h+16} Q ${-w},${-h} ${-w+16},${-h} Z`;
+    case "dome":
+      return `M ${-w},${h-16} Q ${-w},${h} ${-w+16},${h} L ${w-16},${h} Q ${w},${h} ${w},${h-16}
+              L ${w},${-h*.24} Q ${w},${-h} 0,${-h} Q ${-w},${-h} ${-w},${-h*.24} Z`;
+  }
+  return cush(w,h,r||40);
+}
+/* proportional inset — keeps each silhouette's character as it shrinks inward */
+const inset=(D,k)=>shape(D.shape, D.w*k, D.h*k, (D.r||40)*k);
+
+const CRESTS = {
+  arrow:  "M 0,54 L -42,-14 L -21,-14 L -21,-46 L 21,-46 L 21,-14 L 42,-14 Z",
+  oval:   "M 0,-46 A 36,46 0 1 1 0,54 A 36,46 0 1 1 0,-46 Z",
+  shield: "M 0,-48 L -37,-33 L -37,18 Q -37,43 0,54 Q 37,43 37,18 L 37,-33 Z",
+  hex:    "M 0,-48 L -37,-32 L -37,28 L 0,52 L 37,28 L 37,-32 Z",
+  banner: "M -36,-46 L 36,-46 L 36,30 L 0,54 L -36,30 Z"
+};
+
+let seed=7; const rnd=()=>(seed=(seed*1103515245+12345)&0x7fffffff)/0x7fffffff;
+
+/* sparkle: 0 = static, else 0..1 chance this stone twinkles (SMIL, self-contained per gem) */
+function gem(u,x,y,r,hot,sparkle){
+  const g=E("g",{transform:`translate(${x},${y})`});
+  g.appendChild(E("circle",{r:r*1.26,fill:`url(#e${u})`,opacity:".9"}));
+  g.appendChild(E("circle",{r:r,fill:`url(#d${u})`}));
+  const star=E("path",{d:`M 0,${-r} L ${r*.28},${-r*.28} L ${r},0 L ${r*.28},${r*.28}
+    L 0,${r} L ${-r*.28},${r*.28} L ${-r},0 L ${-r*.28},${-r*.28} Z`,fill:"#fff",opacity:hot?.95:.5});
+  g.appendChild(star);
+  if(sparkle && rnd()<sparkle){
+    const dur=(1.6+rnd()*2.2).toFixed(2), delay=(rnd()*3).toFixed(2);
+    const lo=(hot?.5:.18).toFixed(2);
+    star.appendChild(E("animate",{attributeName:"opacity",
+      values:`${lo};1;${lo}`,dur:`${dur}s`,begin:`${delay}s`,repeatCount:"indefinite"}));
+    g.appendChild(E("animateTransform",{attributeName:"transform",type:"scale",
+      values:"1;1.22;1",additive:"sum",dur:`${dur}s`,begin:`${delay}s`,repeatCount:"indefinite"}));
+  }
+  return g;
+}
+function pave(g,u,inner,count,sparkle){
+  for(let i=0;i<(count||56);i++){
+    const t=rnd()*Math.PI*2, rr=.6+rnd()*.28;
+    const x=Math.cos(t)*108*rr, y=Math.sin(t)*94*rr;
+    if(Math.abs(x)<inner && Math.abs(y)<inner*0.9) continue;
+    g.appendChild(gem(u,x,y,1.7+rnd()*1.3,false,sparkle));
+  }
+}
+/* fine shimmer dust — tiny, dense, mostly-sparkling stones layered over the pavé */
+function stardust(g,u,inner,count,sparkle){
+  for(let i=0;i<(count||0);i++){
+    const t=rnd()*Math.PI*2, rr=.6+rnd()*.28;
+    const x=Math.cos(t)*108*rr, y=Math.sin(t)*94*rr;
+    if(Math.abs(x)<inner && Math.abs(y)<inner*0.9) continue;
+    g.appendChild(gem(u,x,y,.8+rnd()*.6,false,sparkle));
+  }
+}
+
+/* ── a ring of radiating baguette (rectangular) stones — the single most
+   recognisable feature of every modern Super Bowl ring's border ── */
+function baguetteRing(g,u,rx,ry,count,len,wid,sparkle){
+  for(let i=0;i<count;i++){
+    const t=(i/count)*Math.PI*2;
+    const x=Math.cos(t)*rx, y=Math.sin(t)*ry;
+    const ang=Math.atan2(y*rx*rx, x*ry*ry)*180/Math.PI;
+    const q=E("g",{transform:`translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${ang.toFixed(2)})`});
+    q.appendChild(E("rect",{x:-len/2-1,y:-wid/2-1,width:len+2,height:wid+2,rx:1.5,fill:`url(#e${u})`}));
+    const st=E("rect",{x:-len/2,y:-wid/2,width:len,height:wid,rx:1,fill:`url(#d${u})`});
+    q.appendChild(st);
+    q.appendChild(E("rect",{x:-len/2,y:-wid/2,width:len,height:wid*0.34,rx:1,fill:"#fff",opacity:".45"}));
+    if(sparkle && Math.random()<sparkle*0.5){
+      const dur=(1.8+Math.random()*2).toFixed(2);
+      st.appendChild(E("animate",{attributeName:"opacity",values:"1;.55;1",
+        dur:dur+"s",begin:(Math.random()*3).toFixed(2)+"s",repeatCount:"indefinite"}));
+    }
+    g.appendChild(q);
+  }
+}
+/* concentric rows of round brilliants — real pavé is laid in rows, not scattered */
+function paveRows(g,u,rxOut,ryOut,rxIn,ryIn,rows,sparkle){
+  for(let r=0;r<rows;r++){
+    const f=r/(rows-1||1);
+    const rx=rxOut+(rxIn-rxOut)*f, ry=ryOut+(ryIn-ryOut)*f;
+    const circ=Math.PI*(3*(rx+ry)-Math.sqrt((3*rx+ry)*(rx+3*ry)));
+    const n=Math.max(8,Math.round(circ/8.4));
+    for(let i=0;i<n;i++){
+      const t=(i/n)*Math.PI*2+(r%2)*(Math.PI/n);
+      g.appendChild(gem(u,Math.cos(t)*rx,Math.sin(t)*ry,3.0,false,sparkle));
+    }
+  }
+}
+function chapterStones(g,u,n,rx,ry,sparkle){
+  for(let i=0;i<n;i++){
+    const t=(i/n)*Math.PI*2-Math.PI/2;
+    g.appendChild(gem(u,Math.cos(t)*rx,Math.sin(t)*ry,5.6,i===0,sparkle));
+  }
+}
+/* a fine ring of tiny stones set into the bezel rim itself */
+function bezelPave(g,u,w,h,r,count,sparkle){
+  for(let i=0;i<count;i++){
+    const t=(i/count)*Math.PI*2 + rnd()*.02;
+    const rx=w-r*0.55, ry=h-r*0.55;
+    g.appendChild(gem(u,Math.cos(t)*rx,Math.sin(t)*ry,1.5+rnd()*.7,false,sparkle));
+  }
+}
+/* a soft highlight that sweeps slowly around the face, like light catching facets */
+function shineSweep(u,w,h){
+  const clipId="clip"+u;
+  const clip=E("clipPath",{id:clipId});
+  clip.appendChild(E("path",{d:cush(w,h,30)}));
+  const wrap=E("g",{});
+  wrap.appendChild(clip);
+  const band=E("g",{"clip-path":`url(#${clipId})`});
+  const strip=E("rect",{x:-40,y:-260,width:60,height:520,fill:`url(#shine${u})`,opacity:".5",
+    transform:"rotate(28)"});
+  band.appendChild(strip);
+  const spin=E("animateTransform",{attributeName:"transform",type:"rotate",
+    values:"0 0 0;360 0 0",dur:"9s",repeatCount:"indefinite"});
+  strip.appendChild(spin);
+  wrap.appendChild(band);
+  return wrap;
+}
+function trophy(u,x,y,sc){
+  const q=E("g",{transform:`translate(${x},${y}) scale(${sc||1})`});
+  q.appendChild(E("path",{d:"M -6,-14 L 6,-14 L 3.4,1.6 L -3.4,1.6 Z",fill:`url(#d${u})`}));
+  q.appendChild(E("rect",{x:-5,y:1.6,width:10,height:2.6,rx:1,fill:`url(#d${u})`}));
+  q.appendChild(E("rect",{x:-6.8,y:4.2,width:13.6,height:3,rx:1,fill:`url(#e${u})`}));
+  return q;
+}
+function legend(g,u,label,dim){
+  const arc=(href,str,fs)=>{
+    const t=E("text",{"font-size":fs,"font-weight":"700","letter-spacing":"2.6",
+      fill:dim?"#4a515c":"#f4e3a8",style:"font-family:Georgia,serif"});
+    const tp=E("textPath",{href:href,startOffset:"50%","text-anchor":"middle"});
+    tp.textContent=str;t.appendChild(tp);return t;
+  };
+  g.appendChild(arc(`#ab${u}`,label,16));
+}
+function crest(u,ch,mono,dim,sparkle){
+  const D=DESIGN[ch], g=E("g",{});
+  const d=CRESTS[D.crest];
+  /* layered setting: outer prong rail, then the stone face */
+  g.appendChild(E("path",{d:d,fill:"none",stroke:`url(#e${u})`,"stroke-width":9,
+    "stroke-linejoin":"round",opacity:".95"}));
+  g.appendChild(E("path",{d:d,fill:`url(#a${u})`,stroke:`url(#e${u})`,"stroke-width":3}));
+  /* prong stones at the crest corners — reads as a real setting */
+  if(!dim){
+    const pts = D.crest==="oval"
+      ? [[0,-46],[0,54],[-36,4],[36,4]]
+      : [[-36,-42],[36,-42],[-36,26],[36,26]];
+    pts.forEach(([px,py])=>g.appendChild(gem(u,px,py,2.6,true,sparkle)));
+  }
+  if(mono){
+    const L=mono.length, fs=L<=2?30:L===3?23:18;
+    g.appendChild(T(mono,{x:0,y:fs*.35,"text-anchor":"middle","font-size":fs,"font-weight":"700",
+      fill:dim?"#525a66":"#fff5d0",style:"font-family:Georgia,serif"}));
+  }
+  return g;
+}
+
+/* ── the seven builds ── */
+function buildRing(s, size, live){
+  const u = s.year, ch = s.ch, dim = !!s.unstruck;
+  seed = s.year*7919;
+  const svg=E("svg",{viewBox:"-210 -210 420 420",width:size,height:size});
+  svg.innerHTML=defs(u,ch,dim);
+
+  /* aura glow — bigger and brighter behind the modal (live) view */
+  const auraR = live ? 168 : 148;
+  const aura=E("circle",{cx:0,cy:0,r:auraR,fill:`url(#aura${u})`});
+  if(!dim){
+    aura.appendChild(E("animate",{attributeName:"r",
+      values:`${auraR};${auraR*1.09};${auraR}`,dur:"3.6s",repeatCount:"indefinite"}));
+    aura.appendChild(E("animate",{attributeName:"opacity",
+      values:live?".9;1;.9":".65;.85;.65",dur:"3.6s",repeatCount:"indefinite"}));
+  }
+  svg.appendChild(aura);
+
+  /* the SVG drop-shadow filter is unreliable inside a CSS 3D/perspective context —
+     in the 3D view the real extrusion provides the depth, so skip it there */
+  const root = live ? E("g",{}) : E("g",{filter:`url(#sh${u})`});
+  const N=["I","II","III","IV","V","VI","VII"].indexOf(ch)+1;
+  /* sparkle intensity: rich in the big modal view, restrained in the case grid */
+  const sparkle = dim ? 0 : (live ? .5 : .22);
+  const paveCount = live ? 130 : 78;
+  const dustCount = live ? 90 : 30;
+
+  const D = DESIGN[ch];
+
+  /* ── body: three stacked bezels, each in the chapter's own silhouette ── */
+  root.appendChild(E("path",{d:inset(D,1.00),fill:`url(#e${u})`}));
+  root.appendChild(E("path",{d:inset(D,0.955),fill:`url(#g${u})`}));
+  bezelPave(root,u,D.w,D.h,D.r||40,live?52:28,sparkle);
+  root.appendChild(E("path",{d:inset(D,0.90),fill:`url(#e${u})`,opacity:".85"}));
+
+  /* ── RAMS · columns lifting the face clear of a hidden bowl ── */
+  if(D.sig==="columns"){
+    root.appendChild(E("path",{d:inset(D,0.86),fill:"#04060a"}));
+    for(let i=0;i<5;i++)
+      root.appendChild(E("ellipse",{cx:0,cy:i*7+34,rx:76-i*12,ry:15-i*2.3,
+        fill:"none",stroke:"#1d2634","stroke-width":"2"}));
+    [-92,-31,31,92].forEach(x=>
+      root.appendChild(E("rect",{x:x-6,y:-102,width:12,height:204,rx:3,fill:`url(#y${u})`})));
+  }
+
+  const face=E("g",{});
+  face.appendChild(E("path",{d:inset(D,0.86),fill:`url(#w${u})`}));
+
+  /* ── 1. radiating baguette border, the signature of a modern SB ring ── */
+  const bagN = live?34:26;
+  baguetteRing(face,u, D.w*0.72, D.h*0.70, bagN, 22, 9, dim?0:sparkle);
+
+  /* ── 2. concentric pavé rows filling the field ── */
+  const gw = D.shape==="shield"||D.shape==="dome" ? 52 : 58;
+  paveRows(face,u, D.w*0.585, D.h*0.565, gw+16, gw*0.88+16, live?4:3, sparkle);
+
+  /* ── 3. yellow-gold frame around the centre medallion ── */
+  face.appendChild(E("ellipse",{cx:0,cy:2,rx:gw+11,ry:gw*0.88+11,
+    fill:"none",stroke:`url(#y${u})`,"stroke-width":11}));
+  face.appendChild(E("ellipse",{cx:0,cy:2,rx:gw+16.5,ry:gw*0.88+16.5,
+    fill:"none",stroke:`url(#e${u})`,"stroke-width":1.6,opacity:".85"}));
+
+  /* ── 4. the centre medallion in the chapter's stone colour ── */
+  face.appendChild(E("ellipse",{cx:0,cy:2,rx:gw,ry:gw*0.88,fill:`url(#a${u})`,
+    stroke:`url(#y${u})`,"stroke-width":3}));
+
+  chapterStones(face,u,N, D.w*0.655, D.h*0.635, dim?0:Math.max(sparkle,.6));
+  if(!dim) face.appendChild(shineSweep(u, D.w*0.80, D.h*0.78));
+
+  /* ── BUCS · baguette accents on the edges + emerald-cut flanks ── */
+  if(D.sig==="twist"){
+    face.appendChild(E("path",{d:inset(D,0.74),fill:"none",stroke:`url(#e${u})`,
+      "stroke-width":1.6,opacity:".85"}));
+    [-1,1].forEach(sgn=>face.appendChild(E("rect",{x:sgn*(D.w*.70)-5,y:-7,width:10,height:14,rx:2,
+      fill:`url(#e${u})`})));
+    [-1,1].forEach(sgn=>{ for(let i=0;i<4;i++)
+      face.appendChild(E("rect",{x:sgn*(D.w*.52)-7,y:-44+i*24,width:14,height:16,rx:2,
+        fill:`url(#d${u})`,stroke:`url(#e${u})`,"stroke-width":1.3}));});
+    [[-30,-D.h*.86],[30,-D.h*.86],[-30,D.h*.86],[30,D.h*.86]].forEach(([x,y])=>
+      face.appendChild(E("rect",{x:x-13,y:y-5,width:26,height:10,rx:2,
+        fill:`url(#c2${u})`,stroke:`url(#e${u})`,"stroke-width":1.6})));
+  }
+
+  /* ── CHIEFS LVIII · split legend + trophy row ── */
+  if(D.sig==="script"){
+    face.appendChild(T("LEAGUE",{x:-D.w*.60,y:8,"text-anchor":"middle","font-size":13,"font-weight":"700",
+      fill:"#fff5d0","letter-spacing":"1.4",style:"font-family:Georgia,serif",
+      transform:`rotate(-90,${-D.w*.60},8)`}));
+    face.appendChild(T("CHAMPION",{x:D.w*.60,y:8,"text-anchor":"middle","font-size":13,"font-weight":"700",
+      fill:"#fff5d0","letter-spacing":"1.4",style:"font-family:Georgia,serif",
+      transform:`rotate(90,${D.w*.60},8)`}));
+    for(let i=0;i<4;i++) face.appendChild(trophy(u,-33+i*22,-D.h*.62,.6));
+  }
+
+  /* ── SEAHAWKS · arches over the crest, twelve feathers beneath ── */
+  if(D.sig==="arches"){
+    [50,64].forEach((r,i)=>face.appendChild(E("path",{
+      d:`M ${-r},30 A ${r},${r*0.94} 0 0 1 ${r},30`,fill:"none",
+      stroke:`url(#e${u})`,"stroke-width":i?4:6,opacity:i?.6:1})));
+    for(let i=0;i<SIZE;i++)
+      face.appendChild(E("path",{d:`M ${-82+i*15},${D.h*.72} q 3.4,-9 0,-17 q -3.4,8 0,17 Z`,
+        fill:`url(#c2${u})`,opacity:".95"}));
+  }
+
+  legend(face,u,s.label,dim);
+
+  /* career trophies flanking the crest */
+  if(D.sig!=="script" && s.titlesThen)
+    for(let i=0;i<s.titlesThen;i++) face.appendChild(trophy(u,i===0?-D.w*.44:D.w*.44,6));
+
+  /* ── EAGLES · wings folded against the flanks ── */
+  let wingL,wingR,revealText;
+  if(D.sig==="wings"){
+    revealText=T(s.reveal||"CHAMPION",{x:0,y:8,"text-anchor":"middle","font-size":17,"font-weight":"700",
+      fill:"#fff5d0","letter-spacing":"2",style:"font-family:Georgia,serif",opacity:"0"});
+    face.appendChild(revealText);
+    const wing=(sgn)=>E("path",{d:`M ${sgn*30},-40 q ${sgn*38},18 ${sgn*30},74
+      q ${-sgn*22},-16 ${-sgn*30},-74 Z`,fill:`url(#g${u})`,stroke:`url(#e${u})`,"stroke-width":2});
+    wingL=wing(-1); wingR=wing(1);
+  }
+
+  const cr=crest(u,ch,dim?"":s.mono,dim,sparkle);
+  face.appendChild(cr);
+  if(D.sig==="wings"){ face.appendChild(wingL); face.appendChild(wingR); }
+
+  /* ── CHIEFS LVIII · handwritten inscription ── */
+  let scriptEl;
+  if(D.sig==="script"){
+    scriptEl=T(s.script||"",{x:0,y:D.h*.66,"text-anchor":"middle","font-size":26,
+      fill:"#fff5d0",style:"font-family:var(--script)",opacity:"0"});
+    face.appendChild(scriptEl);
+  }
+
+  root.appendChild(face);
+  svg.appendChild(root);
+
+  /* ═══ interactions (large view only) ═══ */
+  if(live){
+    let open=false;
+    const hint=document.getElementById("mhint");
+    const set=t=>{if(hint)hint.textContent=t};
+    const SIG={
+      twist:  ()=>{ face.style.transition="transform .7s cubic-bezier(.3,1,.4,1), opacity .5s";
+                face.style.transformOrigin="center";
+                face.style.transform=open?"rotate(24deg) translateY(-34px) scale(1.05)":"";
+                face.style.opacity=open?.25:1; set(open?"Top unscrewed":"Twist the top"); },
+      columns:()=>{ face.style.transition="transform .7s cubic-bezier(.3,1,.4,1), opacity .5s";
+                face.style.transform=open?"translateY(-52px) scale(1.04)":"";
+                face.style.opacity=open?.3:1; set(open?"The bowl beneath":"Lift the face"); },
+      pendant:()=>{ face.style.transition="transform .8s cubic-bezier(.3,1,.4,1)";
+                face.style.transform=open?"translate(58px,-62px) rotate(12deg) scale(.82)":"";
+                set(open?"Worn as a pendant":"Detach the top"); },
+      script: ()=>{ if(scriptEl){scriptEl.style.transition="opacity .6s";scriptEl.setAttribute("opacity",open?1:0);}
+                set(open?"":"Read the inscription"); },
+      wings:  ()=>{ [[wingL,-1],[wingR,1]].forEach(([w,sg])=>{ if(!w)return;
+                  w.style.transition="transform .6s cubic-bezier(.22,1,.36,1)";
+                  w.style.transformOrigin="center";
+                  w.style.transform=open?`translateX(${sg*46}px) rotate(${sg*26}deg)`:""; });
+                cr.style.transition="opacity .4s"; cr.style.opacity=open?0:1;
+                if(revealText){revealText.style.transition="opacity .5s .2s";
+                  revealText.setAttribute("opacity",open?1:0);}
+                set(open?"":"Press to open the wings"); },
+      arches: ()=>{ cr.style.transition="transform .6s cubic-bezier(.22,1,.36,1)";
+                cr.style.transformOrigin="center";
+                cr.style.transform=open?"scale(1.14)":"";
+                face.querySelectorAll("path[stroke-width='6'],path[stroke-width='4']").forEach((a,i)=>{
+                  a.style.transition="transform .6s cubic-bezier(.22,1,.36,1)";
+                  a.style.transform=open?`translateY(${-16-i*6}px) scale(1.1)`:"";
+                });
+                set(open?"WORLD CHAMPIONS":"Press to open the arches"); }
+    };
+    const HINT={twist:"Twist the top",columns:"Lift the face",pendant:"Detach the top",
+                script:"Read the inscription",wings:"Press to open the wings",
+                arches:"Press to open the arches"};
+    const fn = D.sig ? SIG[D.sig] : null;
+    if(fn && !dim){
+      set(HINT[D.sig]);
+      /* exposed so the 3D wrapper can fire it on a click that wasn't a drag */
+      svg.__mech = ()=>{ open=!open; fn(); };
+    } else set(dim?"Not yet struck":"No mechanism — this one keeps to itself");
+  }
+  return svg;
+}
+
+/* ═══════════ 3D STAGE ═══════════
+   Real depth without a 3D library: the silhouette is extruded by stacking
+   copies of the outline at increasing translateZ, with the fully detailed
+   face on top. Drag rotates the whole stack. */
+function buildSVG3D(s, size){
+  const D=DESIGN[s.ch], u=s.year;
+  const M=METALS[s.unstruck?"dead":D.metal];
+
+  const wrap=document.createElement("div"); wrap.className="ring3d";
+  const svg=E("svg",{viewBox:"-235 -235 470 470",width:size,height:size});
+  wrap.appendChild(svg);
+
+  const hex=h=>{h=h.replace("#","");return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
+  const BRIGHT=hex(M[0]), MID=hex(M[1]), DARK=M[4];
+  const lerp=(a,b,t)=>[0,1,2].map(i=>Math.round(a[i]+(b[i]-a[i])*t));
+  const rgb=c=>"rgb("+c[0]+","+c[1]+","+c[2]+")";
+
+  /* ══ proportions of a real championship ring ══
+     the finger hole is about as wide as the head, and the band swells into
+     tapered shoulders that carry it up into the head. */
+  const SC = 0.74;                       // head scale
+  const Hw = D.w*SC, Hh = D.h*SC;
+  const dep = Hw*0.34;                   // half thickness of the head
+  const Ri  = Hw*0.90;                   // inner radius — the finger hole
+  const thTop=Hw*0.26, thBot=Hw*0.125;   // band radial thickness: shoulders vs bottom
+  const wTop =dep*0.98, wBot=dep*0.40;   // band front-to-back width
+  const bcy  = Hh*0.34 + Ri + thTop;     // band centre, tucked under the head
+  const yOff = -((-Hh) + (bcy+Ri+thBot))/2;   // centre the whole ring in frame
+
+  const taper = uu => (1-Math.sin(uu))/2;      // 1 at the top, 0 at the bottom
+  const thick = uu => thBot + (thTop-thBot)*taper(uu);
+  const width = uu => wBot  + (wTop -wBot )*taper(uu);
+
+  /* head silhouette, sampled from this chapter's own outline */
+  const probe=document.createElementNS(NS,"svg");
+  probe.setAttribute("width","0"); probe.setAttribute("height","0");
+  probe.style.cssText="position:absolute;opacity:0;pointer-events:none";
+  const pp=document.createElementNS(NS,"path");
+  pp.setAttribute("d",shape(D.shape,Hw,Hh,(D.r||40)*SC));
+  probe.appendChild(pp); document.body.appendChild(probe);
+  const NP=52, outline=[]; const TL=pp.getTotalLength();
+  for(let i=0;i<NP;i++){const q=pp.getPointAtLength(TL*i/NP); outline.push([q.x,q.y]);}
+  document.body.removeChild(probe);
+
+  const CAM=1600;
+  let yaw=-0.44, pitch=0.19;
+  function T(p){
+    const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+    const py=p[1]+yOff;
+    let X=p[0]*cy+p[2]*sy, Z=-p[0]*sy+p[2]*cy;
+    let Y=py*cp-Z*sp;      Z=py*sp+Z*cp;
+    const k=CAM/(CAM-Z);
+    return [X*k,Y*k,Z];
+  }
+  function TN(n){
+    const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+    let X=n[0]*cy+n[2]*sy, Z=-n[0]*sy+n[2]*cy;
+    let Y=n[1]*cp-Z*sp;   Z=n[1]*sp+Z*cp;
+    return [X,Y,Z];
+  }
+  const LT=(()=>{const v=[-0.40,-0.70,0.59],m=Math.hypot(v[0],v[1],v[2]);return v.map(c=>c/m);})();
+  const shadeOf=(n,boost,amb)=>{
+    const li=Math.max(0,n[0]*LT[0]+n[1]*LT[1]+n[2]*LT[2]);
+    let c=lerp(DARK,MID,Math.min(1,(amb||0)+li*1.25));
+    return rgb(lerp(c,BRIGHT,Math.pow(li,9)*(boost||0.85)));
+  };
+  const dstr=P=>"M"+P.map(q=>q[0].toFixed(1)+","+q[1].toFixed(1)).join("L")+"Z";
+
+  /* a point on the tapered band */
+  function bandPt(uu,vv){
+    const th=thick(uu), wd=width(uu);
+    const mid=Ri+th/2, a=th/2;
+    const rr=mid+a*Math.cos(vv);
+    return [rr*Math.cos(uu), bcy+rr*Math.sin(uu), wd*Math.sin(vv)];
+  }
+  function bandN(uu,vv){
+    const n=[Math.cos(vv)*Math.cos(uu),Math.cos(vv)*Math.sin(uu),Math.sin(vv)];
+    const m=Math.hypot(n[0],n[1],n[2])||1;
+    return TN([n[0]/m,n[1]/m,n[2]/m]);
+  }
+
+  const US=52, VS=10;
+  const bandPool=[], sidePool=[];
+  for(let i=0;i<US*VS;i++){const e=E("path",{d:""}); svg.appendChild(e); bandPool.push(e);}
+  for(let i=0;i<NP;i++){const e=E("path",{d:""}); svg.appendChild(e); sidePool.push(e);}
+
+  const flat=buildRing(s,size,true);
+  const mech=flat.__mech;
+  const art=E("g",{});
+  while(flat.firstChild) art.appendChild(flat.firstChild);
+  svg.appendChild(art);
+
+  function render(){
+    const qs=[];
+    for(let i=0;i<US;i++){
+      const u0=i/US*Math.PI*2,u1=(i+1)/US*Math.PI*2;
+      for(let j=0;j<VS;j++){
+        const v0=j/VS*Math.PI*2,v1=(j+1)/VS*Math.PI*2;
+        const P=[T(bandPt(u0,v0)),T(bandPt(u1,v0)),T(bandPt(u1,v1)),T(bandPt(u0,v1))];
+        const n=bandN((u0+u1)/2,(v0+v1)/2);
+        /* the inside of the hole sits in shadow */
+        const inside=Math.cos((v0+v1)/2)<0;
+        qs.push({z:(P[0][2]+P[1][2]+P[2][2]+P[3][2])/4,d:dstr(P),
+                 f:shadeOf(n,inside?0.25:0.95,inside?-0.12:0.06)});
+      }
+    }
+    qs.sort((a,b)=>a.z-b.z);
+    for(let i=0;i<bandPool.length;i++){
+      const q=qs[i];
+      if(q){bandPool[i].setAttribute("d",q.d);bandPool[i].setAttribute("fill",q.f);}
+      else bandPool[i].setAttribute("d","");
+    }
+    const ss=[];
+    for(let i=0;i<NP;i++){
+      const a=outline[i], b=outline[(i+1)%NP];
+      const P=[T([a[0],a[1],dep]),T([b[0],b[1],dep]),T([b[0],b[1],-dep]),T([a[0],a[1],-dep])];
+      const n0=[b[1]-a[1],-(b[0]-a[0]),0], m=Math.hypot(n0[0],n0[1])||1;
+      const n=TN([n0[0]/m,n0[1]/m,0]);
+      ss.push({z:(P[0][2]+P[1][2]+P[2][2]+P[3][2])/4,d:dstr(P),f:shadeOf(n,0.8,0.05)});
+    }
+    ss.sort((a,b)=>a.z-b.z);
+    for(let i=0;i<sidePool.length;i++){
+      const q=ss[i];
+      if(q){sidePool[i].setAttribute("d",q.d);sidePool[i].setAttribute("fill",q.f);}
+      else sidePool[i].setAttribute("d","");
+    }
+    /* artwork rides the head's front plane, scaled to the head */
+    const O=T([0,0,dep]),X=T([SC,0,dep]),Y=T([0,SC,dep]);
+    art.setAttribute("transform","matrix("+
+      (X[0]-O[0]).toFixed(5)+","+(X[1]-O[1]).toFixed(5)+","+
+      (Y[0]-O[0]).toFixed(5)+","+(Y[1]-O[1]).toFixed(5)+","+
+      O[0].toFixed(2)+","+O[1].toFixed(2)+")");
+  }
+  render();
+
+  let drag=false,lx=0,ly=0,moved=0,raf=null,idle=true,t0=0;
+  const need=()=>{ if(!raf) raf=requestAnimationFrame(()=>{raf=null;render();}); };
+  function spin(t){ if(!idle)return; if(!t0)t0=t;
+    yaw=-0.44+Math.sin((t-t0)/2800)*0.42; pitch=0.19+Math.sin((t-t0)/4100)*0.06;
+    render(); requestAnimationFrame(spin);
+  }
+  setTimeout(()=>{ if(idle) requestAnimationFrame(spin);
+    const h=document.getElementById("rothint"); if(h)h.classList.add("on"); },1150);
+
+  wrap.addEventListener("pointerdown",e=>{
+    idle=false; drag=true; moved=0; lx=e.clientX; ly=e.clientY;
+    try{wrap.setPointerCapture(e.pointerId);}catch(_){}
+  });
+  wrap.addEventListener("pointermove",e=>{
+    if(!drag)return;
+    const dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
+    moved+=Math.abs(dx)+Math.abs(dy);
+    yaw+=dx*0.011; pitch=Math.max(-0.8,Math.min(0.8,pitch+dy*0.007));
+    need();
+  });
+  wrap.addEventListener("pointerup",()=>{ if(!drag)return; drag=false; if(moved<6&&mech) mech(); });
+  wrap.addEventListener("pointercancel",()=>{drag=false;});
+
+  return wrap;
+}
+
+/* ═══════════ WEBGL RING ═══════════
+   Real geometry, real lighting. The head is a domed cap with the chapter's
+   artwork mapped onto it as a texture; the band is a tapered torus. Metal is
+   shaded with two lights, a procedural environment reflection and a fresnel
+   rim, which is what makes it read as metal rather than flat colour. */
+function mat4(){return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);}
+function persp(fov,asp,n,f){const t=1/Math.tan(fov/2),o=mat4();
+  o[0]=t/asp;o[5]=t;o[10]=(f+n)/(n-f);o[11]=-1;o[14]=2*f*n/(n-f);o[15]=0;return o;}
+function mul(a,b){const o=mat4();
+  for(let i=0;i<4;i++)for(let j=0;j<4;j++){let v=0;
+    for(let k=0;k<4;k++)v+=a[k*4+j]*b[i*4+k]; o[i*4+j]=v;} return o;}
+function rotY(r){const o=mat4(),c=Math.cos(r),s=Math.sin(r);o[0]=c;o[2]=-s;o[8]=s;o[10]=c;return o;}
+function rotX(r){const o=mat4(),c=Math.cos(r),s=Math.sin(r);o[5]=c;o[6]=s;o[9]=-s;o[10]=c;return o;}
+function trans(x,y,z){const o=mat4();o[12]=x;o[13]=y;o[14]=z;return o;}
+function nrmMat(m){ /* upper-left 3x3, good enough for rigid transforms */
+  return new Float32Array([m[0],m[1],m[2], m[4],m[5],m[6], m[8],m[9],m[10]]);}
+
+function buildGL(s,size){
+  const D=DESIGN[s.ch], M=METALS[s.metal||D.metal]||METALS[D.metal];
+  const wrap=document.createElement("div"); wrap.className="ring3d";
+  const cv=document.createElement("canvas");
+  const DPR=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.round(size*DPR); cv.height=Math.round(size*DPR);
+  cv.style.cssText=`width:${size}px;height:${size}px;display:block`;
+  wrap.appendChild(cv);
+  let gl=null;
+  try{ gl=cv.getContext("webgl",{antialias:true,alpha:true,premultipliedAlpha:false}); }catch(e){}
+  if(!gl) return null;
+
+  const VS=`attribute vec3 aPos;attribute vec3 aNrm;attribute vec2 aUV;
+  uniform mat4 uMVP,uMV;uniform mat3 uNM;
+  varying vec3 vN,vP;varying vec2 vUV;
+  void main(){vN=uNM*aNrm;vP=(uMV*vec4(aPos,1.0)).xyz;vUV=aUV;gl_Position=uMVP*vec4(aPos,1.0);}`;
+  const FS=`precision highp float;
+  varying vec3 vN,vP;varying vec2 vUV;
+  uniform vec3 uBase,uBright;uniform float uUseTex;uniform sampler2D uTex;
+  vec3 env(vec3 r){
+    float t=clamp(r.y*0.5+0.5,0.0,1.0);
+    vec3 sky=vec3(0.62,0.68,0.80), hor=vec3(0.26,0.26,0.30), grd=vec3(0.05,0.05,0.06);
+    return t>0.5? mix(hor,sky,(t-0.5)*2.0) : mix(grd,hor,t*2.0);
+  }
+  void main(){
+    vec3 N=normalize(vN), V=normalize(-vP);
+    vec3 L1=normalize(vec3(-0.45,0.85,0.85)), L2=normalize(vec3(0.75,0.15,0.55));
+    vec3 R=reflect(-V,N);
+    float d1=max(dot(N,L1),0.0), d2=max(dot(N,L2),0.0);
+    float s1=pow(max(dot(N,normalize(L1+V)),0.0),140.0);
+    float s2=pow(max(dot(N,normalize(L2+V)),0.0),55.0);
+    float fr=pow(1.0-max(dot(N,V),0.0),3.0);
+    vec3 base=uBase;
+    float metal=1.0;
+    if(uUseTex>0.5){
+      vec4 t=texture2D(uTex,vUV);
+      base=mix(uBase,t.rgb,t.a);
+      metal=mix(1.0,0.55,t.a);
+    }
+    vec3 col=base*(0.30+0.50*d1+0.22*d2)
+            + env(R)*base*1.25*metal
+            + uBright*(s1*1.7+s2*0.65)*metal
+            + uBright*fr*0.30*metal;
+    gl_FragColor=vec4(col,1.0);
+  }`;
+  function sh(t,src){const o=gl.createShader(t);gl.shaderSource(o,src);gl.compileShader(o);
+    if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o;}
+  let prog;
+  try{
+    prog=gl.createProgram();
+    gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));
+    gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));
+    gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(prog));
+  }catch(e){ return null; }
+  gl.useProgram(prog);
+  const A={p:gl.getAttribLocation(prog,"aPos"),n:gl.getAttribLocation(prog,"aNrm"),u:gl.getAttribLocation(prog,"aUV")};
+  const U={};["uMVP","uMV","uNM","uBase","uBright","uUseTex","uTex"].forEach(k=>U[k]=gl.getUniformLocation(prog,k));
+
+  /* ── proportions (model units ≈ SVG units / 100) ── */
+  const SC=0.74, Hw=D.w*SC/100, Hh=D.h*SC/100;
+  /* measured off a real size-11 championship ring: 27mm head, 21mm finger hole,
+     13mm thick, band 4mm→3mm radially and 11mm→5.5mm wide. */
+  const dep=Hw*0.48, dome=Hw*0.30;
+  const Ri=Hw*0.78, thTop=Hw*0.30, thBot=Hw*0.22;
+  const wTop=Hw*0.48, wBot=Hw*0.19;
+  /* hoop centre sits at the head's lower edge: its top arc is swallowed by the
+     head and the shank emerges from the head's LEFT and RIGHT flanks. */
+  const bcy=-Hh*0.92;
+  const yOff=-((Hh)+(bcy-Ri-thTop))/2;
+
+  /* head silhouette */
+  const probe=document.createElementNS(NS,"svg");
+  probe.style.cssText="position:absolute;opacity:0;pointer-events:none";
+  const pth=document.createElementNS(NS,"path");
+  pth.setAttribute("d",shape(D.shape,D.w*SC,D.h*SC,(D.r||40)*SC));
+  probe.appendChild(pth); document.body.appendChild(probe);
+  const NP=64, out=[], TLen=pth.getTotalLength();
+  for(let i=0;i<NP;i++){const q=pth.getPointAtLength(TLen*i/NP); out.push([q.x/100,-q.y/100]);}
+  document.body.removeChild(probe);
+
+  const P=[],Nv=[],UVv=[],IDX=[]; let base=0;
+  const push=(p,n,uv)=>{P.push(p[0],p[1]+yOff,p[2]);Nv.push(n[0],n[1],n[2]);UVv.push(uv[0],uv[1]);};
+  const uvOf=(x,y)=>[ (x*100/SC+210)/420, (210-(-y*100/SC))/420 ];
+
+  /* domed head front — rings of the silhouette shrinking to a peak */
+  const K=14;
+  for(let k=0;k<=K;k++){
+    const f=k/K, z=dep+dome*Math.sqrt(Math.max(0,1-f*f));
+    for(let i=0;i<NP;i++){
+      const x=out[i][0]*f, y=out[i][1]*f;
+      const slope=f<1e-4?0:(dome*f/Math.sqrt(Math.max(1e-4,1-f*f)))/Math.hypot(out[i][0],out[i][1]);
+      const n=[out[i][0]*slope,out[i][1]*slope,1];
+      const m=Math.hypot(n[0],n[1],n[2]);
+      push([x,y,z],[n[0]/m,n[1]/m,n[2]/m],uvOf(x,y));
+    }
+  }
+  for(let k=0;k<K;k++)for(let i=0;i<NP;i++){
+    const a=base+k*NP+i,b=base+k*NP+(i+1)%NP,c=base+(k+1)*NP+i,d2=base+(k+1)*NP+(i+1)%NP;
+    IDX.push(a,b,c, b,d2,c);
+  }
+  const headCount=IDX.length; base=P.length/3;
+
+  /* head side wall + back */
+  const sideStart=IDX.length;
+  for(let i=0;i<NP;i++){
+    const a=out[i],b=out[(i+1)%NP];
+    const ex=b[0]-a[0],ey=b[1]-a[1],m=Math.hypot(ex,ey)||1;
+    const n=[ey/m,-ex/m,0];
+    const i0=P.length/3;
+    push([a[0],a[1],dep],n,[0,0]); push([b[0],b[1],dep],n,[0,0]);
+    push([b[0],b[1],-dep],n,[0,0]); push([a[0],a[1],-dep],n,[0,0]);
+    IDX.push(i0,i0+1,i0+2, i0,i0+2,i0+3);
+  }
+  /* ── tapered band ──
+     The hoop lies in the Y–Z plane, so the finger axis runs along X: side to
+     side, PERPENDICULAR to the face. (Previously the hoop sat in the same plane
+     as the face, which would have required the finger to pass through it.) */
+  const US=88,VSg=28;
+  const taper=uu=>(1+Math.sin(uu))/2;              // 1 at top (+y), 0 at bottom
+  /* Sharper falloff keeps the shank BROAD through the shoulders and slims it
+     only near the bottom — the swell you see under the head on a real ring. */
+  const th=uu=>thBot+(thTop-thBot)*Math.pow(taper(uu),0.55);
+  const wd=uu=>wBot+(wTop-wBot)*Math.pow(taper(uu),0.40);
+  /* D-shaped (squircle) cross-section: flat outer panel, flat sides. This is
+     what turns a round wire hoop into a sculpted shank that merges seamlessly
+     into the head instead of poking through it. */
+  const sq=(a,p)=>(a<0?-1:1)*Math.pow(Math.abs(a),p);
+  const bp=(uu,vv)=>{const t=th(uu),mid=Ri+t/2,rr=mid+(t/2)*sq(Math.cos(vv),0.55);
+    return [ rr*Math.cos(uu), bcy+rr*Math.sin(uu), wd(uu)*sq(Math.sin(vv),0.55) ];};
+  /* normals by finite difference — the squircle has no clean analytic normal */
+  const bn=(uu,vv)=>{
+    const e=0.004;
+    const a=bp(uu+e,vv),b=bp(uu-e,vv),c=bp(uu,vv+e),d=bp(uu,vv-e);
+    const du=[a[0]-b[0],a[1]-b[1],a[2]-b[2]], dv=[c[0]-d[0],c[1]-d[1],c[2]-d[2]];
+    let n=[du[1]*dv[2]-du[2]*dv[1], du[2]*dv[0]-du[0]*dv[2], du[0]*dv[1]-du[1]*dv[0]];
+    const m=Math.hypot(n[0],n[1],n[2])||1;
+    n=[n[0]/m,n[1]/m,n[2]/m];
+    const r=[Math.cos(vv)*Math.cos(uu),Math.cos(vv)*Math.sin(uu),Math.sin(vv)];
+    return (n[0]*r[0]+n[1]*r[1]+n[2]*r[2])<0 ? [-n[0],-n[1],-n[2]] : n;   /* face outward */
+  };
+  const bstart=P.length/3;
+  for(let i=0;i<=US;i++){const uu=i/US*Math.PI*2;
+    for(let j=0;j<=VSg;j++){const vv=j/VSg*Math.PI*2;
+      push(bp(uu,vv),bn(uu,vv),[0,0]);
+    }}
+  for(let i=0;i<US;i++)for(let j=0;j<VSg;j++){
+    const a=bstart+i*(VSg+1)+j,b=a+VSg+1;
+    IDX.push(a,b,a+1, b,b+1,a+1);
+  }
+
+  const buf=(data,t)=>{const o=gl.createBuffer();gl.bindBuffer(t,o);gl.bufferData(t,data,gl.STATIC_DRAW);return o;};
+  const bP=buf(new Float32Array(P),gl.ARRAY_BUFFER),
+        bN=buf(new Float32Array(Nv),gl.ARRAY_BUFFER),
+        bU=buf(new Float32Array(UVv),gl.ARRAY_BUFFER),
+        bI=buf(new Uint16Array(IDX),gl.ELEMENT_ARRAY_BUFFER);
+
+  const hx=h=>{h=h.replace("#","");return[parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255];};
+  const BASE=hx(M[1]), BRIGHT=hx(M[0]);
+
+  /* artwork → texture */
+  const tex=gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D,tex);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([40,40,46,255]));
+  const flat=buildRing(s,1024,true);
+  const mech=flat.__mech;
+  flat.setAttribute("width","1024"); flat.setAttribute("height","1024");
+  const img=new Image();
+  img.onload=()=>{ try{
+      gl.bindTexture(gl.TEXTURE_2D,tex);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+      gl.generateMipmap(gl.TEXTURE_2D);
+      draw();
+    }catch(e){} };
+  img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(new XMLSerializer().serializeToString(flat));
+
+  gl.enable(gl.DEPTH_TEST); gl.clearColor(0,0,0,0);
+
+  let yaw=-0.52, pitch=0.20;
+  function draw(){
+    gl.viewport(0,0,cv.width,cv.height);
+    gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+    const Pm=persp(0.72,1,0.1,50);
+    const Vm=trans(0,0,-4.6);
+    const Mm=mul(rotX(pitch),rotY(yaw));
+    const MV=mul(Vm,Mm), MVP=mul(Pm,MV);
+    gl.uniformMatrix4fv(U.uMVP,false,MVP);
+    gl.uniformMatrix4fv(U.uMV,false,MV);
+    gl.uniformMatrix3fv(U.uNM,false,nrmMat(Mm));
+    gl.uniform3fv(U.uBase,BASE); gl.uniform3fv(U.uBright,BRIGHT);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,tex); gl.uniform1i(U.uTex,0);
+    [[bP,A.p,3],[bN,A.n,3],[bU,A.u,2]].forEach(([b,loc,n])=>{
+      gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc,n,gl.FLOAT,false,0,0);});
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,bI);
+    gl.uniform1f(U.uUseTex,1);
+    gl.drawElements(gl.TRIANGLES,headCount,gl.UNSIGNED_SHORT,0);
+    gl.uniform1f(U.uUseTex,0);
+    gl.drawElements(gl.TRIANGLES,IDX.length-headCount,gl.UNSIGNED_SHORT,headCount*2);
+  }
+  draw();
+
+  let drag=false,lx=0,ly=0,moved=0,raf=null,idle=true,t0=0;
+  const need=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=null;draw();});};
+  function spin(t){ if(!idle)return; if(!t0)t0=t;
+    yaw=-0.52+Math.sin((t-t0)/3000)*0.34; pitch=0.20+Math.sin((t-t0)/4300)*0.07;
+    draw(); requestAnimationFrame(spin); }
+  setTimeout(()=>{ if(idle)requestAnimationFrame(spin);
+    const h=document.getElementById("rothint"); if(h)h.classList.add("on"); },1150);
+  wrap.addEventListener("pointerdown",e=>{idle=false;drag=true;moved=0;lx=e.clientX;ly=e.clientY;
+    try{wrap.setPointerCapture(e.pointerId);}catch(_){}} );
+  wrap.addEventListener("pointermove",e=>{ if(!drag)return;
+    const dx=e.clientX-lx,dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
+    moved+=Math.abs(dx)+Math.abs(dy);
+    yaw+=dx*0.011; pitch=Math.max(-0.8,Math.min(0.8,pitch+dy*0.007)); need(); });
+  wrap.addEventListener("pointerup",()=>{ if(!drag)return; drag=false; if(moved<6&&mech)mech(); });
+  wrap.addEventListener("pointercancel",()=>{drag=false;});
+  wrap.__gl=true;
+  return wrap;
+}
+
+function build3D(s,size){
+  const g=buildGL(s,size);
+  return g || buildSVG3D(s,size);   /* graceful fallback if WebGL is unavailable */
+}
+
+/* ═══════════ MOUNT ═══════════ */
+const cases=document.getElementById("cases");
+SEASONS.forEach((s,i)=>{
+  const d=document.createElement("div");
+  d.className="case"+(s.unstruck?" empty":""); d.tabIndex=0;
+  d.innerHTML=`<div class="chap">CHAPTER ${s.ch}</div>`;
+  const box=document.createElement("div"); box.className="ringbox";
+  box.appendChild(buildRing(s,188,false)); d.appendChild(box);
+  const p=document.createElement("div"); p.className="plaque";
+  p.innerHTML = s.unstruck
+    ? `<div class="cn">Unnamed</div><div class="yr">${s.label}</div>
+       <div class="await">Awaiting a champion</div>
+       <div class="src">After ${s.src}</div>`
+    : `<div class="cn">${s.name}</div><div class="yr">${s.label}</div>
+       <div class="who">${s.champ}</div><div class="team">${s.team}</div>
+       ${s.record?`<div class="tag">${s.record}</div>`:""}
+       <div class="src">After ${s.src}</div>`;
+  d.appendChild(p);
+  d.onclick=()=>open_(i); d.onkeydown=e=>{if(e.key==="Enter")open_(i)};
+  cases.appendChild(d);
+});
+
+const lin=document.getElementById("lineage");
+SEASONS.forEach(s=>{
+  const r=document.createElement("div");
+  r.className="ln"+(s.titlesThen>1?" rep":"");
+  r.innerHTML=`<div class="top"><div class="y">${s.label}</div>
+      <div class="n">${s.champ||"—"}</div></div>
+    <div class="d">${s.decl?`<b>Declared:</b> ${s.decl}`:`<span class="pend">${s.declNote}</span>`}</div>`;
+  lin.appendChild(r);
+});
+
+/* ── stat tiles: league-wide superlatives ── */
+const tileSpecs = [
+  { lbl:"Most rings",         pick:m=>m.titles,  fmt:v=>v+"×" },
+  { lbl:"Best avg finish",    pick:m=>-m.avgFin, fmt:v=>(-v).toFixed(2) },
+  { lbl:"Best postseason %",  pick:m=>m.pg?m.ppct:-1, fmt:v=>(v*100).toFixed(0)+"%" },
+  { lbl:"Best reg. season %", pick:m=>m.winpct,  fmt:v=>(v*100).toFixed(1)+"%" },
+  { lbl:"Most avg PF/season", pick:m=>m.avgPf,   fmt:v=>v.toFixed(1) },
+];
+document.getElementById("statgrid").innerHTML = tileSpecs.map(t=>{
+  const best = STATS.reduce((a,b)=> t.pick(b)>t.pick(a) ? b : a);
+  return `<div class="stile"><div class="lbl">${t.lbl}</div>
+    <div class="val">${t.fmt(t.pick(best))}</div><div class="who">${best.name}</div></div>`;
+}).join("");
+
+
+/* ── sortable lifetime table ── */
+let sortKey="titles", sortDir=-1;
+function renderStats(){
+  const rows = [...STATS].sort((a,b)=>{
+    const d=(a[sortKey]-b[sortKey])*sortDir;
+    return d!==0 ? d : (b.winpct-a.winpct);
+  });
+  const head = `<thead><tr>` + STAT_COLS.map(c=>{
+    const key = c.sortKey||c.key;
+    const active = key===sortKey;
+    const arrow = active ? (sortDir>0?"▲":"▼") : "";
+    return `<th class="${c.align==='n'?'n':''}${active?' sorted':''}" data-key="${key}">${c.label}${arrow?`<span class="arrow">${arrow}</span>`:""}</th>`;
+  }).join("") + `</tr></thead>`;
+  const body = `<tbody>` + rows.map((m,i)=>`<tr class="${i===0&&sortDir<0?'top-row':''}">` +
+    STAT_COLS.map(c=>{
+      const raw = c.key==="wl" ? null : m[c.key];
+      const val = c.fmt(raw, m);
+      const cls = [c.align==='n'?'n':'', c.key==='name'?'mgr':'', c.cls?c.cls(raw):''].filter(Boolean).join(" ");
+      return `<td class="${cls}">${val}</td>`;
+    }).join("") + `</tr>`).join("") + `</tbody>`;
+  const tbl = document.getElementById("stats-tbl");
+  tbl.innerHTML = head + body;
+  tbl.querySelectorAll("th[data-key]").forEach(th=>{
+    th.onclick = ()=>{
+      const k = th.dataset.key;
+      const col = STAT_COLS.find(c=>(c.sortKey||c.key)===k);
+      if (k===sortKey) sortDir *= -1;
+      else { sortKey=k; sortDir = col && col.invert ? 1 : -1; }  /* avg finish: lower is better */
+      renderStats();
+    };
+  });
+}
+renderStats();
+
+
+/* ═══════════ MODAL ═══════════ */
+const veil=document.getElementById("veil"), modal=document.getElementById("modal");
+function open_(i){
+  const s=SEASONS[i];
+  modal.innerHTML=`<div class="x" onclick="close_()">&times;</div>
+    <div class="mhead">
+      <div class="cn">${s.name||"Chapter Unnamed"}</div>
+      <div class="yr">Chapter ${s.ch} · ${s.label} · ${s.platform}</div>
+      ${s.champ?`<div class="who">${s.champ}</div><div class="team">${s.team}</div>`
+               :`<div class="who" style="color:#4d5666;font-style:italic">Awaiting a champion</div>`}
+    </div>
+    <div class="mring" id="mring"></div>
+    <div class="rothint" id="rothint">Drag to rotate</div>
+    <div class="mhint" id="mhint"></div>
+    <div class="drow"><div class="k">Modeled after</div><div class="v">${s.src}</div></div>
+    <div class="drow"><div class="k">What it borrows</div><div class="v">${s.borrowed}</div></div>
+    <div class="drow"><div class="k">Record</div><div class="v${s.record?"":" gap"}">${s.record||"needed"}</div></div>
+    <div class="drow"><div class="k">Title game</div><div class="v${s.finalScore?"":" gap"}">${s.finalScore||"bracket not recorded"}</div></div>
+    <div class="drow" style="border:0"><div class="k">The season</div><div class="v">${s.story}</div></div>`;
+  const mring = document.getElementById("mring");
+  const stage = document.createElement("div");
+  stage.className = "reveal-stage";
+  stage.appendChild(build3D(s,270));
+  mring.appendChild(stage);
+
+  /* one-time unveiling flourish — skipped for the unstruck Chapter VII case */
+  if(!s.unstruck){
+    const flash=document.createElement("div"); flash.className="flash"; mring.appendChild(flash);
+    const N=18;
+    for(let i=0;i<N;i++){
+      const p=document.createElement("div"); p.className="burst";
+      const t=(i/N)*Math.PI*2 + (Math.random()*.4-.2);
+      const dist=90+Math.random()*70;
+      p.style.setProperty("--bx", (Math.cos(t)*dist).toFixed(1)+"px");
+      p.style.setProperty("--by", (Math.sin(t)*dist).toFixed(1)+"px");
+      p.style.animationDelay=(Math.random()*.12).toFixed(2)+"s";
+      mring.appendChild(p);
+    }
+  }
+  veil.classList.add("on");
+}
+function close_(){veil.classList.remove("on")}
+veil.onclick=e=>{if(e.target===veil)close_()};
+document.onkeydown=e=>{if(e.key==="Escape")close_()};
+</script>
+</body>
+</html>
