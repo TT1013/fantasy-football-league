@@ -142,6 +142,25 @@
   .mhead .team{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
   .mring{display:flex;justify-content:center;margin:8px 0 6px;position:relative}
   .reveal-stage{position:relative;animation:ringReveal 1.1s cubic-bezier(.16,1.2,.3,1) both}
+
+  /* ── live chapter ── */
+  .live-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .live-head .cn{font-family:var(--serif);font-style:italic;font-size:21px;color:var(--goldlt)}
+  .livedot{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:#7fd99a;border:1px solid #27402f;border-radius:99px;padding:3px 10px}
+  .livedot i{width:6px;height:6px;border-radius:50%;background:#7fd99a;
+    animation:pulseDot 2.4s ease-in-out infinite}
+  @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.25}}
+  @media (prefers-reduced-motion:reduce){.livedot i{animation:none}}
+  .wkline{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+    margin:0 0 20px}
+  .liveload{color:var(--dim);font-size:13px;padding:14px 0}
+  .liveerr{color:#e08a8a;font-size:13px;padding:14px 0}
+  .tbl .mgr .sub{display:block;font-weight:400;font-size:11.5px;color:var(--dim);
+    letter-spacing:.02em;margin-top:2px}
+  .tbl td.unk .sub{color:#6b5a2e;font-style:italic}
+  .tbl tr.me td{background:linear-gradient(90deg,rgba(240,214,126,.07),transparent)}
+  .tbl td.pf{font-variant-numeric:tabular-nums}
   /* ── 3D stage ── */
   .ring3d{perspective:1100px;perspective-origin:50% 44%;touch-action:none;cursor:grab;
     position:relative;display:block}
@@ -194,6 +213,14 @@
     <div class="kicker">Est. 2020</div>
     <h1><em>Hall of Records</em></h1>
   </div>
+
+  <section>
+    <div class="shead"><span class="num">Now</span><h2>The Current Chapter</h2></div>
+    <p class="sdesc">Chapter VII is being played. These standings come straight from the
+      league on Sleeper and refresh every time this page is opened — the first chapter
+      written in real time rather than recovered afterward.</p>
+    <div id="live"><div class="liveload">Reading the league…</div></div>
+  </section>
 
   <section>
     <div class="shead"><span class="num">I</span><h2>The Memorial</h2></div>
@@ -278,7 +305,7 @@ const SEASONS = [
 
 { ch:"VI", year:2025, label:"'25–'26", name:"The Mandu Memorial", namedBy:"Matt Foley",
   champ:"Dan Holmqvist", team:"Dan's Dazzling Team", mono:"DDT", titlesThen:1, record:"6-8",
-  runnerUp:"maniel", third:"Matt Skroce — Dart-er of the McBride", platform:"Sleeper",
+  runnerUp:"maniel", third:"Matt Skroce — Dart-er of the McBride", platform:"Yahoo",
   src:"Super Bowl LX · Seattle Seahawks",
   borrowed:"Navy sapphire under a domed face, action-green feathers — one per manager — set along the base, and stadium arches in white gold that spring apart to reveal the title.",
   decl:"Removes the 4th WR slot. Changes the playoff format to 7 teams with a first-place bye.",
@@ -1238,6 +1265,86 @@ function build3D(s,size){
   const g=buildGL(s,size);
   return g || buildSVG3D(s,size);   /* graceful fallback if WebGL is unavailable */
 }
+
+
+/* ═══════════ CHAPTER VII — LIVE FROM SLEEPER ═══════════
+   Sleeper's API is public, unauthenticated and CORS-enabled, so the page reads the
+   league directly on load. Nothing is baked in; the season updates itself. */
+const SLEEPER_LEAGUE = "1398667916802551808";
+/* Sleeper display_name → manager. Four handles are not yet confirmed and render as
+   their team name rather than being guessed at. */
+const SLEEPER_MGR = {
+  "flemishgiant":"Binh Nguyen", "TT13":"Tommy Tran", "danholm":"Dan Holmqvist",
+  "MSkroce":"Matt Skroce", "BishSyca":"Ben Thai", "SackZaddy":"maniel (Mandy Liao & Dan Dacey)",
+  "eddiefisher":"Eddie Fisher", "phodacbiet617":"Phong Nguyen"
+};
+const SLEEPER_API = "https://api.sleeper.app/v1/league/" + SLEEPER_LEAGUE;
+
+async function loadLiveChapter(){
+  const host = document.getElementById("live");
+  if(!host) return;
+  try{
+    const [lg,users,rosters] = await Promise.all([
+      fetch(SLEEPER_API).then(r=>r.json()),
+      fetch(SLEEPER_API+"/users").then(r=>r.json()),
+      fetch(SLEEPER_API+"/rosters").then(r=>r.json())
+    ]);
+    const byId = Object.fromEntries(users.map(u=>[u.user_id,u]));
+    const rows = rosters.map(r=>{
+      const u = byId[r.owner_id] || {};
+      const md = u.metadata || {};
+      const st = r.settings || {};
+      const dn = u.display_name || "—";
+      return {
+        team: md.team_name || dn,
+        handle: dn,
+        mgr: SLEEPER_MGR[dn] || null,
+        w: st.wins|0, l: st.losses|0, t: st.ties|0,
+        pf: (st.fpts|0) + (st.fpts_decimal|0)/100,
+        pa: (st.fpts_against|0) + (st.fpts_against_decimal|0)/100
+      };
+    }).sort((a,b)=> (b.w-a.w) || (b.pf-a.pf));
+
+    const wk = lg.settings?.leg ?? "—";
+    const scored = lg.settings?.last_scored_leg ?? "—";
+    const po = lg.settings?.playoff_teams ?? 7;
+    const poStart = lg.settings?.playoff_week_start ?? 15;
+    const pfTot = rows.reduce((a,b)=>a+b.pf,0), paTot = rows.reduce((a,b)=>a+b.pa,0);
+    const balanced = Math.abs(pfTot-paTot) < 0.02;
+
+    host.innerHTML =
+      `<div class="live-head">
+         <span class="cn">${lg.name}</span>
+         <span class="livedot"><i></i>Live</span>
+       </div>
+       <p class="wkline">Week ${wk} · ${scored} weeks scored · top ${po} make the playoffs,
+         beginning week ${poStart}${balanced?" · points reconcile":""}</p>
+       <div class="tblwrap"><table class="tbl" id="live-tbl"></table></div>`;
+
+    const cut = po;
+    document.getElementById("live-tbl").innerHTML =
+      `<thead><tr><th>Team</th><th class="n">Record</th><th class="n">Win %</th>
+        <th class="n">PF</th><th class="n">PA</th><th class="n">Diff</th></tr></thead><tbody>` +
+      rows.map((r,i)=>{
+        const g=r.w+r.l+r.t, pct=g?(r.w/g*100).toFixed(1)+"%":"—";
+        const d=r.pf-r.pa;
+        const line = i===cut-1 ? ' style="border-bottom:1px solid var(--gold)"' : "";
+        return `<tr class="${r.mgr==="Tommy Tran"?"me":""}"${line}>
+          <td class="mgr${r.mgr?"":" unk"}">${r.team}
+            <span class="sub">${r.mgr || "@"+r.handle+" — manager unconfirmed"}</span></td>
+          <td class="n">${r.w}-${r.l}${r.t?"-"+r.t:""}</td>
+          <td class="n">${pct}</td>
+          <td class="n pf">${r.pf.toFixed(2)}</td>
+          <td class="n pf">${r.pa.toFixed(2)}</td>
+          <td class="n pf ${d>=0?"pos":"neg"}">${d>=0?"+":""}${d.toFixed(2)}</td>
+        </tr>`;
+      }).join("") + `</tbody>`;
+  }catch(e){
+    host.innerHTML = `<div class="liveerr">Couldn't reach Sleeper just now — the history
+      below is unaffected. (${e.message})</div>`;
+  }
+}
+loadLiveChapter();
 
 /* ═══════════ MOUNT ═══════════ */
 const cases=document.getElementById("cases");
