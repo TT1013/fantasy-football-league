@@ -2,12 +2,12 @@
 type: league-records
 league: TT13's Fantasy Challenge
 commissioner: Tommy Tran
-platform_history: Yahoo (2021–2025) → Sleeper (2026–)
+platform_history: Yahoo (2021–2026, Chapters I–VI) → Sleeper (2027–, Chapter VII on)
 founded: Season ending January 2021
-seasons_total: 6
+seasons_total: 7 (6 complete, 1 in progress)
 seasons_with_full_standings: 6
 seasons_with_full_schedules: 4
-last_updated: 2026-08-16
+last_updated: 2026-11-08
 source: Commissioner-supplied screenshots + TT13 Fantasy League Bylaws (Google Doc)
 tags: [fantasy-football, tt13, canton, hall-of-records]
 ---
@@ -36,7 +36,7 @@ second copy of these numbers anywhere else.
 | IV | 2024 | The Madden Curse | Flemish Giant | Binh Nguyen | TT13 (T. Tran) | Chase'n The Cup (T. Nguyen) | 2 |
 | V | 2025 | The Flemish Giant Invitational | I Can Buy Myself Bowers | Matt Foley | Daddy Tilt (P. Nguyen) | Robinson & Robinson (E. Fisher) | 1 |
 | VI | 2026 | The Mandu Memorial | Dan's Dazzling Team | Dan Holmqvist | maniel (M. Liao & D. Dacey) | Dart-er of the McBride (M. Skroce) | 1 |
-| VII | 2027 | *unnamed* | — | — | — | — | — |
+| VII | 2027 | The Lucky Lineup Manager Classic | *in progress* | — | — | — | — |
 
 Six seasons, six titles, five distinct champions. Binh Nguyen is the only repeat winner,
 and named Chapter V after his own team.
@@ -569,3 +569,46 @@ a standalone Hall of Records exhibit:
 
 Recommend adding this to the Hall prototype's exhibit list, replacing the more speculative
 "Best Record, No Ring" card (which cited only Chapter V) with the full six-chapter tally.
+
+
+---
+
+## Chapter VII — 2027 · *The Lucky Lineup Manager Classic* · IN PROGRESS
+
+- **Platform:** Sleeper — the league's first season off Yahoo
+- **Sleeper league ID:** `1398667916802551808` (no `previous_league_id`; a fresh league,
+  not chained to prior seasons)
+- **Format:** 12 teams · 14-game regular season · **7-team playoff with a first-place bye**,
+  beginning week 15 — Dan Holmqvist's declaration, confirmed live in the league settings
+- **Chapter named by:** Dan Holmqvist, champion of Chapter VI
+- **Ring:** will be modeled on Super Bowl LXI · champion not yet decided
+
+Standings are **not recorded here.** This chapter is read live from Sleeper's public API
+by `index.html` on every page load, so the Hall always shows the current week rather than
+a snapshot that drifts. It will be written into this file once the season concludes.
+
+### Roster — Sleeper handle → manager
+
+| Sleeper handle | Team | Manager |
+|:--|:--|:--|
+| `themonkeyfrommars` | Gimme the Runs | Matt Foley |
+| `MSkroce` | Gibbs it to me baby | Matt Skroce |
+| `flemishgiant` | flemishgiant | Binh Nguyen |
+| `N3wAppN3wM3` | *(unset)* | Timmy Nguyen |
+| `BishSyca` | Bishop Sycamore | Ben Thai |
+| `jck2` | Certified Love(r) Boy | Jake Kaufman |
+| `SackZaddy` | Maniel | Mandy Liao & Dan Dacey |
+| `JustANice6uy` | *(unset)* | Andrew Chen |
+| `TT13` | TT13 | Tommy Tran |
+| `danholm` | Dan's Dazzling Team | Dan Holmqvist |
+| `phodacbiet617` | Daddy | Phong Nguyen |
+| `eddiefisher` | This fuckin team…. | Eddie Fisher |
+
+**Zero roster turnover from Chapter VI** — the same twelve managers, the first time in
+league history that two consecutive chapters have been played by an identical field.
+
+### Correction applied
+
+Chapters I–VI were **all played on Yahoo.** This file previously recorded Chapter VI as
+Sleeper, inferred from Foley's declaration stating the league *would* move. The move
+actually took effect for Chapter VII. Corrected here and in `index.html`.

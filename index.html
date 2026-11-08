@@ -1273,11 +1273,18 @@ function build3D(s,size){
 const SLEEPER_LEAGUE = "1398667916802551808";
 /* Sleeper display_name → manager. Four handles are not yet confirmed and render as
    their team name rather than being guessed at. */
-const SLEEPER_MGR = {
-  "flemishgiant":"Binh Nguyen", "TT13":"Tommy Tran", "danholm":"Dan Holmqvist",
-  "MSkroce":"Matt Skroce", "BishSyca":"Ben Thai", "SackZaddy":"maniel (Mandy Liao & Dan Dacey)",
-  "eddiefisher":"Eddie Fisher", "phodacbiet617":"Phong Nguyen"
+const SLEEPER_MGR_RAW = {
+  "flemishgiant":"Binh Nguyen",      "TT13":"Tommy Tran",
+  "danholm":"Dan Holmqvist",         "MSkroce":"Matt Skroce",
+  "BishSyca":"Ben Thai",             "SackZaddy":"maniel (Mandy Liao & Dan Dacey)",
+  "eddiefisher":"Eddie Fisher",      "phodacbiet617":"Phong Nguyen",
+  "themonkeyfrommars":"Matt Foley",  "N3wAppN3wM3":"Timmy Nguyen",
+  "JustANice6uy":"Andrew Chen",      "jck2":"Jake Kaufman"
 };
+/* handles are matched case-insensitively so a capitalisation change can't
+   silently drop someone back to "unconfirmed" */
+const SLEEPER_MGR = Object.fromEntries(
+  Object.entries(SLEEPER_MGR_RAW).map(([k,v])=>[k.toLowerCase(),v]));
 const SLEEPER_API = "https://api.sleeper.app/v1/league/" + SLEEPER_LEAGUE;
 
 async function loadLiveChapter(){
@@ -1298,7 +1305,7 @@ async function loadLiveChapter(){
       return {
         team: md.team_name || dn,
         handle: dn,
-        mgr: SLEEPER_MGR[dn] || null,
+        mgr: SLEEPER_MGR[(dn||"").toLowerCase()] || null,
         w: st.wins|0, l: st.losses|0, t: st.ties|0,
         pf: (st.fpts|0) + (st.fpts_decimal|0)/100,
         pa: (st.fpts_against|0) + (st.fpts_against_decimal|0)/100
