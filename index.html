@@ -44,6 +44,23 @@
   .fnote{color:var(--dim);font-size:11.5px;line-height:1.7;max-width:760px;margin:18px 0 0}
   .fnote b{color:var(--brass);font-weight:600}
 
+  /* ── island survivor (side title, sits under the Memorial) ── */
+  .island{margin-top:64px;padding-top:34px;border-top:1px solid var(--rule)}
+  .island .ihead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .island .ihead .tag{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);
+    border:1px solid #2a2f38;border-radius:99px;padding:3px 10px}
+  .island h3{font-family:var(--serif);font-weight:400;font-size:19px;margin:0}
+  .island .sdesc{font-size:13px;margin-bottom:24px}
+  .isles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+  .isle{background:var(--case);border:1px solid var(--rule);border-radius:10px;padding:16px 16px 14px}
+  .isle .yr{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+  .isle .who{font-size:15px;font-weight:600;margin-top:10px}
+  .isle .team{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px;
+    line-height:1.5}
+  .isle .duel{font-size:11.5px;color:var(--dim);margin-top:12px;padding-top:10px;border-top:1px solid #141a24;
+    line-height:1.55;font-variant-numeric:tabular-nums}
+  .isle .duel b{color:var(--brass);font-weight:600}
+
   .cases{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   @media(max-width:920px){.cases{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:580px){.cases{grid-template-columns:1fr}}
@@ -231,6 +248,14 @@
       negotiated. It is struck once, it stays forever, and the only way to get one is to
       earn it.</p>
     <div class="cases" id="cases"></div>
+
+    <div class="island">
+      <div class="ihead"><span class="tag">Side Title</span><h3>The Island Survivor Champion</h3></div>
+      <p class="sdesc">The league's in-season cup. Every week the lowest scorer among the teams
+        still standing is voted off the island, and the last team left after Week 11 is the
+        survivor. Smaller stakes than a ring, but still earned.</p>
+      <div class="isles" id="isles"></div>
+    </div>
   </section>
 
   <section>
@@ -247,6 +272,7 @@
       absences aren't padded with zeros. Click any column header to sort.</p>
     <div class="statgrid" id="statgrid"></div>
     <div class="tblwrap"><table class="tbl stattbl" id="stats-tbl"></table></div>
+    <p class="fnote" id="stats-note"></p>
   </section>
 
 </div>
@@ -321,7 +347,7 @@ const SEASONS = [
    finishes[] = final placement each chapter played, used for avg finish + podiums. */
 /* bestVs / worstVs computed from all 420 transcribed regular-season matchups,
    Chapters II–VI, restricted to opponents still in the league. */
-const STATS = [
+const BASE_STATS = [
   { name:"Tommy Tran",   seasons:6, w:51, l:32, titles:1, po:6, pw:5, pl:4,
     pf:12035.50, pa:11197.44, finishes:[5,1,8,2,6,6],  bestVs:["Thai","6-0"],     worstVs:["B. Nguyen","3-6"] },
   { name:"maniel",       seasons:4, w:34, l:22, titles:1, po:3, pw:5, pl:2,
@@ -346,18 +372,32 @@ const STATS = [
     pf:11069.42, pa:11615.98, finishes:[10,10,9,6,10,12], bestVs:["Fisher","3-1"], worstVs:["Tran","0-6"] },
   { name:"Dan Holmqvist",seasons:2, w:10, l:18, titles:1, po:1, pw:3, pl:0,
     pf:3995.72,  pa:4253.88,  finishes:[12,1],         bestVs:["Thai","3-0"],      worstVs:["Fisher","0-3"] },
-].map(m => {
-  const g=m.w+m.l, pg=m.pw+m.pl;
-  return { ...m, g, pg,
-    winpct: m.w/g,
-    ppct:   pg ? m.pw/pg : 0,
-    avgPf:  m.pf/m.seasons,
-    avgPa:  m.pa/m.seasons,
-    margin: (m.pf-m.pa)/m.seasons,
-    poRate: m.po/m.seasons,
-    avgFin: m.finishes.reduce((a,b)=>a+b,0)/m.finishes.length,
-    finals:  m.finishes.filter(f=>f<=2).length };   /* reached the title game */
-});
+];
+
+/* The split for the chapter in progress (Sleeper, read live on load):
+   - regular-season W-L and points INCLUDE it — they're real games, just not all of them yet;
+   - seasons, finishes, playoffs, rings, Owns/Owned By stay COMPLETED chapters only —
+     a standing mid-season isn't a finish.
+   Points are averaged per game (not per season) so a partial season can be counted
+   without dragging the averages down; it also evens out Chapter I's 13-game season. */
+let LIVE_NOTE = null;
+function deriveStats(live){
+  return BASE_STATS.map(m0 => {
+    const x = (live && live[m0.name]) || null;
+    const m = x ? { ...m0, w:m0.w+x.w, l:m0.l+x.l, pf:m0.pf+x.pf, pa:m0.pa+x.pa, live:true } : { ...m0 };
+    const g=m.w+m.l, pg=m.pw+m.pl;
+    return { ...m, g, pg,
+      winpct: m.w/g,
+      ppct:   pg ? m.pw/pg : 0,
+      avgPf:  m.pf/g,
+      avgPa:  m.pa/g,
+      margin: (m.pf-m.pa)/g,
+      poRate: m.po/m.seasons,
+      avgFin: m.finishes.reduce((a,b)=>a+b,0)/m.finishes.length,
+      finals:  m.finishes.filter(f=>f<=2).length };   /* reached the title game */
+  });
+}
+let STATS = deriveStats(null);
 
 /* a ring glyph — used in place of the old diamond for titles */
 const RINGICON = `<svg viewBox="0 0 16 16" width="13" height="13" style="vertical-align:-2px;margin:0 1px">
@@ -375,9 +415,9 @@ const STAT_COLS = [
   { key:"poRate",  label:"Playoff %",     align:"n", fmt:v=>(v*100).toFixed(0)+"%" },
   { key:"avgFin",  label:"Avg Finish",    align:"n", fmt:v=>v.toFixed(2), invert:true },
   { key:"finals",  label:"Finals",        align:"n", fmt:v=>v||'<span class="zero">—</span>' },
-  { key:"avgPf",   label:"Avg PF",        align:"n", fmt:v=>v.toFixed(1) },
-  { key:"avgPa",   label:"Avg PA",        align:"n", fmt:v=>v.toFixed(1) },
-  { key:"margin",  label:"Avg Margin",    align:"n", fmt:v=>(v>=0?"+":"")+v.toFixed(1), cls:v=>v>=0?"pos":"neg" },
+  { key:"avgPf",   label:"PF / Game",     align:"n", fmt:v=>v.toFixed(1) },
+  { key:"avgPa",   label:"PA / Game",     align:"n", fmt:v=>v.toFixed(1) },
+  { key:"margin",  label:"Margin / G",    align:"n", fmt:v=>(v>=0?"+":"")+v.toFixed(1), cls:v=>v>=0?"pos":"neg" },
   { key:"bestVs",  label:"Owns",          align:"n", sortKey:"winpct",
     fmt:(v)=>`<span class="h2h"><b>${v[0]}</b> <i class="pos">${v[1]}</i></span>` },
   { key:"worstVs", label:"Owned By",      align:"n", sortKey:"winpct",
@@ -1346,12 +1386,40 @@ async function loadLiveChapter(){
           <td class="n pf ${d>=0?"pos":"neg"}">${d>=0?"+":""}${d.toFixed(2)}</td>
         </tr>`;
       }).join("") + `</tbody>`;
+    try{ applyLiveToStats(rows, scored, lg.season); }
+    catch(e){ console.warn("lifetime stats: live chapter not applied", e); }
   }catch(e){
     host.innerHTML = `<div class="liveerr">Couldn't reach Sleeper just now — the history
       below is unaffected. (${e.message})</div>`;
   }
 }
 loadLiveChapter();
+
+/* ═══════════ ISLAND SURVIVOR — weekly low scorer eliminated, last team after Wk 11 wins ═══════════
+   2021–2025 verified (twice) against each season's Yahoo weekly scoreboards, Weeks 1–11;
+   2026 computed from the Sleeper matchups API. No ties in any week. */
+const ISLAND = [
+  { ch:"II",  label:"'21–'22", who:"Timmy Nguyen", team:"DangeRuss Kupp",
+    last:"Jake", ws:168.08, ls:123.34 },
+  { ch:"III", label:"'22–'23", who:"Mandy Liao & Dan Dacey", team:"maniel",
+    last:"AB", ws:149.64, ls:148.12 },
+  { ch:"IV",  label:"'23–'24", who:"Tommy Tran", team:"TT13",
+    last:"maniel", ws:149.00, ls:138.10 },
+  { ch:"V",   label:"'24–'25", who:"Matt Skroce", team:"Puka Tides and Vibes",
+    last:"maniel", ws:183.88, ls:166.12 },
+  { ch:"VI",  label:"'25–'26", who:"Matt Skroce", team:"Dart-er of the McBride",
+    last:"Flemish Giant", ws:160.48, ls:127.54 },
+  /* Sleeper, league 1398667916802551808 — decided after Week 11 even though the chapter is still being played */
+  { ch:"VII", label:"'26–'27", who:"Phong Nguyen", team:"Daddy",
+    last:"Gimme the Runs", ws:123.66, ls:117.50 },
+];
+document.getElementById("isles").innerHTML = ISLAND.map(r=>`
+  <div class="isle">
+    <div class="yr">Chapter ${r.ch} · ${r.label}</div>
+    <div class="who">${r.who}</div>
+    <div class="team">${r.team}</div>
+    <div class="duel">Last one standing in Week 11<br><b>${r.ws.toFixed(2)}</b> vs ${r.last} ${r.ls.toFixed(2)}</div>
+  </div>`).join("");
 
 /* ═══════════ MOUNT ═══════════ */
 const cases=document.getElementById("cases");
@@ -1391,13 +1459,35 @@ const tileSpecs = [
   { lbl:"Best avg finish",    pick:m=>-m.avgFin, fmt:v=>(-v).toFixed(2) },
   { lbl:"Best postseason %",  pick:m=>m.pg?m.ppct:-1, fmt:v=>(v*100).toFixed(0)+"%" },
   { lbl:"Best reg. season %", pick:m=>m.winpct,  fmt:v=>(v*100).toFixed(1)+"%" },
-  { lbl:"Most avg PF/season", pick:m=>m.avgPf,   fmt:v=>v.toFixed(1) },
+  { lbl:"Most PF / game",     pick:m=>m.avgPf,   fmt:v=>v.toFixed(1) },
 ];
-document.getElementById("statgrid").innerHTML = tileSpecs.map(t=>{
-  const best = STATS.reduce((a,b)=> t.pick(b)>t.pick(a) ? b : a);
-  return `<div class="stile"><div class="lbl">${t.lbl}</div>
-    <div class="val">${t.fmt(t.pick(best))}</div><div class="who">${best.name}</div></div>`;
-}).join("");
+function renderTiles(){
+  document.getElementById("statgrid").innerHTML = tileSpecs.map(t=>{
+    const best = STATS.reduce((a,b)=> t.pick(b)>t.pick(a) ? b : a);
+    return `<div class="stile"><div class="lbl">${t.lbl}</div>
+      <div class="val">${t.fmt(t.pick(best))}</div><div class="who">${best.name}</div></div>`;
+  }).join("");
+  document.getElementById("stats-note").innerHTML = LIVE_NOTE ||
+    "<b>Completed chapters only.</b> The chapter in progress is added from Sleeper when it loads.";
+}
+renderTiles();
+
+/* fold the live chapter's regular season into the lifetime table (see deriveStats) */
+function applyLiveToStats(rows, scoredThrough, year){
+  const names = BASE_STATS.map(m=>m.name);
+  const live = {};
+  rows.forEach(r=>{
+    if(!r.mgr) return;
+    const n = names.find(n => r.mgr===n || r.mgr.startsWith(n+" "));
+    if(n) live[n] = { w:r.w, l:r.l, pf:r.pf, pa:r.pa };
+  });
+  if(!Object.keys(live).length) return;
+  STATS = deriveStats(live);
+  LIVE_NOTE = `<b>Includes ${year} through Week ${scoredThrough}</b> in regular-season record, win % and
+    points per game. Seasons, playoffs, rings, finishes and head-to-head count completed chapters only
+    until ${year} is decided.`;
+  renderTiles(); renderStats();
+}
 
 
 /* ── sortable lifetime table ── */
